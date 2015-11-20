@@ -6,5 +6,6 @@ package dijons.classifier;
 public class Test {
     public static void main(String[] args) {
         System.out.println("Welkom Jens!");
+        System.out.println("hoi");
     }
 }

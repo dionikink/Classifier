@@ -1,4 +1,4 @@
-package Classifier;
+package dijons.classifier.core;
 
 /**
  * Created by jensj.r on 12/8/2015.

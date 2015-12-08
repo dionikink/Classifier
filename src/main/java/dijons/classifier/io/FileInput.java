@@ -1,4 +1,4 @@
-package Input;
+package dijons.classifier.io;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -5,4 +5,5 @@ package Classifier;
  * 
  */
 public class Data {
+
 }

@@ -3,7 +3,6 @@ package dijons.classifier.gui.controllers;
 import dijons.classifier.gui.ClassifyStage;
 import dijons.classifier.gui.TestStage;
 import dijons.classifier.gui.TrainStage;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 

@@ -1,5 +1,7 @@
 package dijons.classifier.core;
 
+import dijons.classifier.core.data.KnowledgeBase;
+
 /**
  * Created by jensj.r on 12/7/2015.
  *
@@ -7,7 +9,6 @@ package dijons.classifier.core;
 public class Classifier {
 
     KnowledgeBase knowledgeBase;
-    Data data;
 
     public void classifyData() {
 

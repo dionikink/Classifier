@@ -1,6 +1,5 @@
 package dijons.classifier.gui;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

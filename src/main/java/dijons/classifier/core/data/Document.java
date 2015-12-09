@@ -1,6 +1,7 @@
 package dijons.classifier.core.data;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jensj.r on 12/9/2015.
@@ -8,25 +9,14 @@ import java.util.List;
  */
 public class Document {
 
-    public List<String> getClass1List() {
-        return class1List;
+    private Map<String, Integer> bagOfWords;
+    private String category;
+
+    public Document() {
+        this.bagOfWords = new HashMap<String, Integer>();
     }
 
-    public void setClass1List(List<String> class1List) {
-        this.class1List = class1List;
+    public Document(Map<String, Integer> bagOfWords) {
+        this.bagOfWords = bagOfWords;
     }
-
-    public List<String> getClass2List() {
-        return class2List;
-    }
-
-    public void setClass2List(List<String> class2List) {
-        this.class2List = class2List;
-    }
-
-    List<String> class1List;
-    List<String> class2List;
-    /*
-    Goede manier van bag of words opslaan;
-     */
 }

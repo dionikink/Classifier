@@ -10,49 +10,83 @@ import java.util.zip.ZipFile;
 
 /**
  * Created by dion on 9-12-15.
+ *
  */
 public class DataUtils {
 
+    private static HashMap<String, Integer> bagOfWords;
+
     public static Map<String, Map<String, Integer>> extractVocabulary(File file) throws IOException{
+
         Map<String, Map<String,Integer>> result = new HashMap<String, Map<String, Integer>>();
-        Map<String, Integer> bagOfWords = new HashMap<String, Integer>();
         ZipFile zipFile = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        String className = null;
-        while (entries.hasMoreElements()) {
-            boolean newEntry = true;
+        count(entries);
+        entries = zipFile.entries();
+        String categoryName = null;
+
+        while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
-            System.out.println(entry.toString());
             if (entry.isDirectory()) {
-                if (className != null) {
-                    result.put(className, bagOfWords);
-                    bagOfWords = new HashMap<String, Integer>();
+                if (categoryName != null) {
+                    result.put(categoryName, bagOfWords);
                 }
-                className = entry.getName();
+                bagOfWords = new HashMap<String, Integer>();
+                categoryName = entry.getName().replaceAll("[^a-z A-Z]", "");
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-                String string = "";
-                String s;
-                while ((s = bufferedReader.readLine()) != null) {
-                    string = string + s;
-                }
-                string = string.toLowerCase();
-                string = string.replaceAll("[^a-z \\s]", "");
-                String[] array = string.split("\\s");
-                for (int i = 0; i < array.length; i++) {
-                    if (!bagOfWords.keySet().contains(array[i])) {
-                        bagOfWords.put(array[i], 1);
-                    } else if (newEntry) {
-                        bagOfWords.replace(array[i], bagOfWords.get(array[i]) + 1);
-                        newEntry = false;
-                    }
-                }
+                List<String> uniqueWords = getUniqueWords(bufferedReader);
+                addUniqueWordsToBag(uniqueWords);
             }
         }
-        if (className != null) {
-            result.put(className, bagOfWords);
+        if (categoryName != null && bagOfWords != null) {
+            result.put(categoryName, bagOfWords);
         }
         return result;
+    }
+
+    public static void addUniqueWordsToBag(List<String> uniqueWords) {
+        for (String word : uniqueWords) {
+            if (bagOfWords.containsKey(word)) {
+                bagOfWords.replace(word, bagOfWords.get(word) + 1);
+            } else {
+                bagOfWords.put(word, 1);
+            }
+        }
+    }
+
+    public static List<String> getUniqueWords(BufferedReader bufferedReader) throws IOException {
+        List<String> result = new ArrayList<String>();
+        String string = "";
+        String s;
+        while((s = bufferedReader.readLine()) != null) {
+            s = s.toLowerCase();
+            s = s.replaceAll("[^a-z \\s]", "");
+            string = string + s;
+        }
+        String[] wordArray = string.split("\\s");
+        for (int i = 0; i < wordArray.length; i++) {
+            if(!result.contains(wordArray[i])) {
+                result.add(wordArray[i]);
+            }
+        }
+        return result;
+    }
+
+    public static void count(Enumeration<? extends ZipEntry> entries) {
+        int totalNoOfDocs = 0;
+        int totalNoOfCategories = 0;
+
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if (entry.isDirectory()) {
+                totalNoOfCategories++;
+            } else {
+                totalNoOfDocs++;
+            }
+        }
+        KnowledgeBase.numberOfCategories = totalNoOfCategories;
+        KnowledgeBase.numberOfDocuments = totalNoOfDocs;
     }
 
     public static Document tokenizer(String data) {
@@ -71,6 +105,4 @@ public class DataUtils {
         }
         return new Document(bagOfWords);
     }
-
-
 }

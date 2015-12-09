@@ -38,12 +38,12 @@ public class InputHandler {
         File file = new File("C:\\Users\\jensj.r\\Downloads\\hoi.zip");
         try {
             Map<String, Map<String, Integer>> hoi = DataUtils.extractVocabulary(file);
-            for ( String s : hoi.keySet()) {
-                System.out.println(s + ": ");
-                for (String s1 : hoi.keySet()) {
-                    System.out.println(s1 + ":\t" + hoi.get(s1));
-                }
-            }
+//            for ( String s : hoi.keySet()) {
+//                System.out.println(s + ": ");
+//                for (String s1 : hoi.get(s).keySet()) {
+//                    System.out.println(s1 + hoi.get(s).get(s1));
+//                }
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

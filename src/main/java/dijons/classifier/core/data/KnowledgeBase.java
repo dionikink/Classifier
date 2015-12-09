@@ -6,7 +6,7 @@ package dijons.classifier.core.data;
  */
 public class KnowledgeBase {
 
-    public int numberOfDocuments = 0;
-    public int numberOfCategories = 0;
+    public static int numberOfDocuments = 0;
+    public static int numberOfCategories = 0;
 
 }

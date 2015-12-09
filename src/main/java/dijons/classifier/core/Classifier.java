@@ -8,7 +8,7 @@ import dijons.classifier.core.data.KnowledgeBase;
  */
 public class Classifier {
 
-    KnowledgeBase knowledgeBase;
+    private KnowledgeBase knowledgeBase;
 
     public void classifyData() {
 

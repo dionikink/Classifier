@@ -16,10 +16,8 @@ public class Classifier {
 
     private KnowledgeBase knowledgeBase;
 
-    public void apply(ArrayList<Document> arrayList) {
-        for (Document document : arrayList) {
-            //Classify die mofo
-        }
+    public void apply(File file) {
+
     }
 
     public void train(List<String> classes, File file) {

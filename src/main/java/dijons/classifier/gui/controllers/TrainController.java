@@ -1,5 +1,7 @@
 package dijons.classifier.gui.controllers;
 
+import dijons.classifier.core.Trainer;
+import dijons.classifier.core.data.Document;
 import dijons.classifier.io.InputHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -9,6 +11,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.zip.ZipFile;
 
 /**
@@ -21,6 +25,7 @@ public class TrainController {
     public TextField txtSelected;
     public Button btnTrain;
     public InputHandler inputHandler = new InputHandler();
+    public Trainer trainer = new Trainer();
 
     private File selectedFile;
 
@@ -41,7 +46,12 @@ public class TrainController {
     }
 
     public void btnTrainClicked() {
+        try {
+            ArrayList<Document> arrayList = inputHandler.getDocumentListForTraining(selectedFile);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnCancelClicked() {

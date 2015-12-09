@@ -19,14 +19,19 @@ import java.util.zip.ZipFile;
  */
 public class InputHandler {
 
-    public ArrayList<Document> getDocumentListForTraining(File file) throws IOException{
-        ArrayList<Document> result = new ArrayList<Document>();
+    public HashMap<String, ArrayList<Document>> getDocumentListForTraining(File file) throws IOException{
+        HashMap<String,ArrayList<Document>> result = new HashMap<String, ArrayList<Document>>();
+        ArrayList<Document> arrayList = new ArrayList<Document>();
         ZipFile zipFile = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         String className = null;
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             if (entry.isDirectory()) {
+                if (className != null) {
+                    result.put(className, arrayList);
+                    arrayList = new ArrayList<Document>();
+                }
                 className = entry.getName();
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
@@ -37,9 +42,10 @@ public class InputHandler {
                 }
                 Document document = tokenizer(string);
                 document.setCategory(className);
-                result.add(document);
+                arrayList.add(document);
             }
         }
+        result.put(className, arrayList);
         return result;
     }
 
@@ -47,11 +53,9 @@ public class InputHandler {
         InputHandler inputHandler = new InputHandler();
         File file = new File("C:\\Users\\jensj.r\\Downloads\\blogs.zip");
         try {
-            for ( Document d : inputHandler.getDocumentListForTraining(file)) {
-                System.out.println(d.getCategory() + ": ");
-                for (String s : d.getBagOfWords().keySet()) {
-                    System.out.println(s + "\t\t\t" + d.getBagOfWords().get(s));
-                }
+            HashMap<String, ArrayList<Document>> hoi = inputHandler.getDocumentListForTraining(file);
+            for ( String s : hoi.keySet()) {
+                System.out.println(s + ": ");
             }
         } catch (IOException e) {
             e.printStackTrace();

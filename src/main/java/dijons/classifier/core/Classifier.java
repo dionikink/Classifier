@@ -1,5 +1,6 @@
 package dijons.classifier.core;
 
+import dijons.classifier.core.data.DataUtils;
 import dijons.classifier.core.data.KnowledgeBase;
 import dijons.classifier.core.data.Vocabulary;
 
@@ -27,10 +28,11 @@ public class Classifier {
         Map<String, Map<String, Double>> condProb = new HashMap<String, Map<String, Double>>();
 
         List<String> classes = v.getClasses();
+        Map<String, Integer> docsInClass = DataUtils.countDocsInClass(file);
 
         for(String classEntry : classes) {
-            int docsInClass = v.countDocsInClass(classEntry);
-            prior.put(classEntry, (double) (docsInClass/numberOfDocuments));
+            int docsInThisClass = docsInClass.get(classEntry);
+            prior.put(classEntry, Math.log((double)(docsInThisClass/numberOfDocuments)));
 
         }
     }

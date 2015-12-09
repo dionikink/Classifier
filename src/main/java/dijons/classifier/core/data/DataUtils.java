@@ -23,7 +23,6 @@ public class DataUtils {
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         count(entries);
         entries = zipFile.entries();
-        Vocabulary.countDocsInClass(zipFile);
         String categoryName = null;
 
         while(entries.hasMoreElements()) {
@@ -105,5 +104,39 @@ public class DataUtils {
             }
         }
         return new Document(bagOfWords);
+    }
+
+    public static Map<String, Integer> countDocsInClass(File file) {
+        ZipFile zipFile = null;
+        Map<String, Integer> docsInClass = new HashMap<String, Integer>();
+
+        try {
+            zipFile = new ZipFile(file);
+        } catch (IOException e) {
+            System.err.println("Cannot create zip file.");
+        }
+
+        if (zipFile != null) {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            String className = null;
+            int count = 0;
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (entry.isDirectory()) {
+                    if (className != null) {
+                        docsInClass.put(className, count);
+                    }
+                    className = entry.getName().replaceAll("[^a-z A-Z]", "");
+                    count = 0;
+                } else {
+                    count++;
+                }
+            }
+            if (className != null) {
+                docsInClass.put(className, count);
+            }
+        }
+
+        return docsInClass;
     }
 }

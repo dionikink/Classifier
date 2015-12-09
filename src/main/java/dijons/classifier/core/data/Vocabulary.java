@@ -50,28 +50,5 @@ public class Vocabulary {
         return wordsInClass;
     }
 
-    public static void countDocsInClass(ZipFile zipFile) {
-        docsInClass = new HashMap<String, Integer>();
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        String className = null;
-        int count = 0;
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            if (entry.isDirectory()) {
-                if (className != null) {
-                    docsInClass.put(className, count);
-                }
-                className = entry.getName();
-                count = 0;
-            } else {
-                count++;
-            }
-        }
-        if (className != null) {
-            docsInClass.put(className, count);
-        }
-        for (String s : docsInClass.keySet()) {
-            System.out.println(s + docsInClass.get(s));
-        }
-    }
+
 }

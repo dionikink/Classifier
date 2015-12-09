@@ -47,11 +47,6 @@ public class TrainController {
     }
 
     public void btnTrainClicked() {
-        try {
-            HashMap<String, ArrayList<Document>> arrayList = inputHandler.getDocumentListForTraining(selectedFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void btnCancelClicked() {

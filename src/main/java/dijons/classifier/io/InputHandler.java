@@ -2,10 +2,7 @@ package dijons.classifier.io;
 
 import dijons.classifier.core.data.Document;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -39,18 +36,20 @@ public class InputHandler {
         return result;
     }
 
-    public HashMap<String, ArrayList<Document>> getDocumentMapForTraining(File file) throws IOException{
-        HashMap<String,ArrayList<Document>> result = new HashMap<String, ArrayList<Document>>();
-        ArrayList<Document> arrayList = new ArrayList<Document>();
+    public HashMap<String, HashMap<String, Integer>> getDocumentMapForTraining(File file) throws IOException{
+        HashMap<String,HashMap<String,Integer>> result = new HashMap<String, HashMap<String, Integer>>();
+        HashMap<String, Integer> bagOfWords = new HashMap<String, Integer>();
         ZipFile zipFile = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         String className = null;
         while (entries.hasMoreElements()) {
+            boolean newEntry = true;
             ZipEntry entry = entries.nextElement();
+            System.out.println(entry.toString());
             if (entry.isDirectory()) {
                 if (className != null) {
-                    result.put(className, arrayList);
-                    arrayList = new ArrayList<Document>();
+                    result.put(className, bagOfWords);
+                    bagOfWords = new HashMap<String, Integer>();
                 }
                 className = entry.getName();
             } else {
@@ -60,12 +59,22 @@ public class InputHandler {
                 while ((s = bufferedReader.readLine()) != null) {
                     string = string + s;
                 }
-                Document document = tokenizer(string);
-                document.setCategory(className);
-                arrayList.add(document);
+                string = string.toLowerCase();
+                string = string.replaceAll("[^a-z \\s]", "");
+                String[] array = string.split("\\s");
+                for (int i = 0; i < array.length; i++) {
+                    if (!bagOfWords.keySet().contains(array[i])) {
+                        bagOfWords.put(array[i], 1);
+                    } else if (newEntry) {
+                        bagOfWords.replace(array[i], bagOfWords.get(array[i]) + 1);
+                        newEntry = false;
+                    }
+                }
             }
         }
-        result.put(className, arrayList);
+        if (className != null) {
+            result.put(className, bagOfWords);
+        }
         return result;
     }
 
@@ -73,13 +82,11 @@ public class InputHandler {
         InputHandler inputHandler = new InputHandler();
         File file = new File("C:\\Users\\jensj.r\\Downloads\\blogs.zip");
         try {
-            HashMap<String, ArrayList<Document>> hoi = inputHandler.getDocumentMapForTraining(file);
+            HashMap<String, HashMap<String, Integer>> hoi = inputHandler.getDocumentMapForTraining(file);
             for ( String s : hoi.keySet()) {
                 System.out.println(s + ": ");
-                for (Document d : hoi.get(s)) {
-                    for (String s1 : d.getBagOfWords().keySet()) {
-                        System.out.println(d.getBagOfWords().get(s1));
-                    }
+                for (String s1 : hoi.keySet()) {
+                    System.out.println(s1 + ":\t" + hoi.get(s1));
                 }
             }
         } catch (IOException e) {

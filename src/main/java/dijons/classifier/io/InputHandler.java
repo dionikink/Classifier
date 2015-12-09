@@ -2,13 +2,14 @@ package dijons.classifier.io;
 
 import dijons.classifier.core.data.Document;
 
-import javax.print.Doc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -30,8 +31,10 @@ public class InputHandler {
             while ((s = bufferedReader.readLine()) != null) {
                 string = string + s;
             }
-            Document document = tokenizer(string);
-            result.add(document);
+            if (!string.equals("")) {
+                Document document = tokenizer(string);
+                result.add(document);
+            }
         }
         return result;
     }

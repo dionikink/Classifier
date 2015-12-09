@@ -1,5 +1,6 @@
 package dijons.classifier.gui.controllers;
 
+import dijons.classifier.core.Classifier;
 import dijons.classifier.core.Trainer;
 import dijons.classifier.core.data.Document;
 import dijons.classifier.io.InputHandler;
@@ -47,6 +48,8 @@ public class TrainController {
     }
 
     public void btnTrainClicked() {
+        Classifier c = new Classifier();
+        c.train(selectedFile);
     }
 
     public void btnCancelClicked() {

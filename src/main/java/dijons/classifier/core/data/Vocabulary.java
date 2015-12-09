@@ -2,10 +2,9 @@ package dijons.classifier.core.data;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Created by dion on 9-12-15.
@@ -13,7 +12,7 @@ import java.util.Map;
 public class Vocabulary {
 
     private Map<String, Map<String, Integer>> vocabulary;
-    private Map<String, Integer> docsInClass;
+    private static Map<String, Integer> docsInClass;
 
     public Vocabulary(File file) {
         try {
@@ -48,12 +47,31 @@ public class Vocabulary {
 
             wordsInClass.put(classEntry, size);
         }
-
         return wordsInClass;
     }
 
-    public int countDocsInClass(String classEntry) {
-        //TODO: method schrijven die aantal docs in een class teruggeeft
-        return 0;
+    public static void countDocsInClass(ZipFile zipFile) {
+        docsInClass = new HashMap<String, Integer>();
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        String className = null;
+        int count = 0;
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if (entry.isDirectory()) {
+                if (className != null) {
+                    docsInClass.put(className, count);
+                }
+                className = entry.getName();
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+        if (className != null) {
+            docsInClass.put(className, count);
+        }
+        for (String s : docsInClass.keySet()) {
+            System.out.println(s + docsInClass.get(s));
+        }
     }
 }

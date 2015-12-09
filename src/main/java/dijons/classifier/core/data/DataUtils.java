@@ -23,6 +23,7 @@ public class DataUtils {
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         count(entries);
         entries = zipFile.entries();
+        Vocabulary.countDocsInClass(zipFile);
         String categoryName = null;
 
         while(entries.hasMoreElements()) {

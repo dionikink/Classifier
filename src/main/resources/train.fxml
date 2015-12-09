@@ -6,13 +6,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="111.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="train" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="111.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dijons.classifier.gui.controllers.TrainController">
    <children>
       <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the training set (*.zip)" />
       <TextField fx:id="txtSelected" editable="false" layoutX="14.0" layoutY="37.0" prefHeight="25.0" prefWidth="324.0" />
-      <Button fx:id="btnBrowse" layoutX="348.0" layoutY="37.0" mnemonicParsing="false" text="Browse" />
-      <Button fx:id="btnClassify" layoutX="346.0" layoutY="72.0" mnemonicParsing="false" text="Classify" />
-      <Button fx:id="btnCancel" layoutX="275.0" layoutY="72.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="btnBrowse" layoutX="348.0" layoutY="37.0" mnemonicParsing="false" text="Browse" onAction="#btnBrowseClicked"/>
+      <Button fx:id="btnTrain" disable="true" layoutX="363.0" layoutY="72.0" mnemonicParsing="false" text="Train" onAction="#btnTrainClicked"/>
+      <Button fx:id="btnCancel" layoutX="291.0" layoutY="72.0" mnemonicParsing="false" text="Cancel" onAction="#btnCancelClicked"/>
    </children>
 </Pane>

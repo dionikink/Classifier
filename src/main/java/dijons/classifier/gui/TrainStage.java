@@ -1,24 +1,30 @@
 package dijons.classifier.gui;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TrainStage extends Application {
+import java.io.IOException;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/train.fxml"));
-        primaryStage.setTitle("Dijons Classifier");
-        primaryStage.setScene(new Scene(root, 428, 111));
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    }
+public class TrainStage {
 
+    @FXML
+    Parent main;
 
-    public static void main(String[] args) {
-        launch(args);
+    public void start() {
+        try {
+            main = FXMLLoader.load(getClass().getResource("/train.fxml"));
+        } catch (IOException e) {
+            System.err.println("Error loading train.fxml");
+        }
+
+        Stage stage = new Stage();
+        stage.setTitle("Train classifier");
+        stage.setScene(new Scene(main, 428, 111));
+        stage.setResizable(false);
+        stage.show();
     }
 }

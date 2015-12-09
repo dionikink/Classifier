@@ -1,9 +1,6 @@
 package dijons.classifier.core.data;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -169,5 +166,46 @@ public class DataUtils {
             wordsInClass.put(classEntry, size);
         }
         return wordsInClass;
+    }
+
+    public static ArrayList<Document> extractDocuments(File file) throws IOException {
+        ArrayList<Document> result = new ArrayList<Document>();
+        ZipFile zipFile = new ZipFile(file);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while(entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
+            String string = "";
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                string = string + s;
+            }
+            if (!string.equals("")) {
+                Document document = DataUtils.tokenizer(string);
+                result.add(document);
+            }
+        }
+        return result;
+    }
+
+    public static Document extractDocument(File file) {
+        Document result = null;
+        String data = "";
+        String newLine;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            while((newLine = br.readLine()) != null) {
+                data += newLine;
+            }
+
+            result = DataUtils.tokenizer(data);
+
+        } catch (IOException e) {
+            System.err.println("Cannot open file " + file.getName());
+        }
+
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package dijons.classifier.core.data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,8 +13,9 @@ public class KnowledgeBase {
     public static int numberOfDocuments = 0;
     public static int numberOfCategories = 0;
 
-    private Map<String, Double> prior = new HashMap<String, Double>();
-    private Map<String, Map<String, Double>> condProb = new HashMap<String, Map<String, Double>>();
+    private Map<String, Double> prior;
+    private Map<String, Map<String, Double>> condProb;
+    private List<String> classes;
 
     public Map<String, Double> getPrior() {
         return prior;
@@ -29,5 +31,13 @@ public class KnowledgeBase {
 
     public void setCondProb(Map<String, Map<String, Double>> condProb) {
         this.condProb = condProb;
+    }
+
+    public List<String> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<String> classes) {
+        this.classes = classes;
     }
 }

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
+
 <Pane fx:id="classify" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="167.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dijons.classifier.gui.controllers.ClassifyController">
    <children>
-      <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select source file (*.zip)" />
+      <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select source file (*.txt)" />
       <TextField fx:id="txtSelected" editable="false" layoutX="14.0" layoutY="37.0" prefHeight="25.0" prefWidth="324.0" />
-      <Button fx:id="btnBrowseSource" layoutX="348.0" layoutY="37.0" mnemonicParsing="false" text="Browse" onAction="#btnBrowseSourceClicked"/>
-      <Button fx:id="btnClassify" disable="true" layoutX="346.0" layoutY="129.0" mnemonicParsing="false" text="Classify" onAction="#btnClassifyClicked"/>
-      <Button fx:id="btnCancel" layoutX="275.0" layoutY="129.0" mnemonicParsing="false" text="Cancel" onAction="#btnCancelClicked"/>
+      <Button fx:id="btnBrowseSource" layoutX="348.0" layoutY="37.0" mnemonicParsing="false" onAction="#btnBrowseSourceClicked" text="Browse" />
+      <Button fx:id="btnClassify" disable="true" layoutX="346.0" layoutY="129.0" mnemonicParsing="false" onAction="#btnClassifyClicked" text="Classify" />
+      <Button fx:id="btnCancel" layoutX="275.0" layoutY="129.0" mnemonicParsing="false" onAction="#btnCancelClicked" text="Cancel" />
       <Text layoutX="14.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select output location" />
       <TextField fx:id="txtOutput" editable="false" layoutX="14.0" layoutY="94.0" prefHeight="25.0" prefWidth="324.0" />
-      <Button fx:id="btnBrowseOutput" layoutX="346.0" layoutY="94.0" mnemonicParsing="false" text="Browse" onAction="#btnBrowseOutputClicked"/>
+      <Button fx:id="btnBrowseOutput" layoutX="346.0" layoutY="94.0" mnemonicParsing="false" onAction="#btnBrowseOutputClicked" text="Browse" />
    </children>
 </Pane>

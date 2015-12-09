@@ -1,7 +1,9 @@
 package dijons.classifier.gui.controllers;
 
+import dijons.classifier.core.Classifier;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -26,13 +28,12 @@ public class ClassifyController {
     private boolean sourceSelected = false;
     private boolean outputSelected = false;
 
-
     public void btnBrowseSourceClicked() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select source file");
         Stage stage = (Stage) classify.getScene().getWindow();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ZIP archives (*.zip)", "*.zip");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(stage);
@@ -65,7 +66,20 @@ public class ClassifyController {
     }
 
     public void btnClassifyClicked() {
+        Classifier c = Classifier.getInstance();
+        String result = c.apply(selectedFile);
 
+        Alert resultPrompt = new Alert(Alert.AlertType.WARNING);
+        resultPrompt.setTitle("Result!");
+        resultPrompt.setHeaderText(null);
+
+        if (result != null) {
+            resultPrompt.setContentText("This document is classified as: " + result);
+        } else {
+            resultPrompt.setContentText("Could not classify this document.");
+        }
+
+        resultPrompt.showAndWait();
     }
 
     public void btnCancelClicked() {

@@ -1,6 +1,7 @@
 package dijons.classifier.core;
 
 import dijons.classifier.core.data.DataUtils;
+import dijons.classifier.core.data.Document;
 import dijons.classifier.core.data.KnowledgeBase;
 import dijons.classifier.core.data.Vocabulary;
 
@@ -16,13 +17,44 @@ import java.util.Map;
 public class Classifier {
 
     private KnowledgeBase knowledgeBase;
+    private final static Classifier instance = new Classifier();
+
 
     public Classifier() {
         this.knowledgeBase = new KnowledgeBase();
     }
 
-    public void apply(File file) {
+    public String apply(File file) {
+        String resultClass = null;
+        Map<String, Double> prior = knowledgeBase.getPrior();
+        Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
+        List<String> classes = knowledgeBase.getClasses();
 
+        Document document = DataUtils.extractDocument(file);
+        Map<String, Integer> tokens = document.getBagOfWords();
+
+        Map<String, Double> result = new HashMap<String, Double>();
+
+        for(String classEntry : classes) {
+            double score = prior.get(classEntry);
+
+            for(String token : condProb.get(classEntry).keySet()) {
+                score += condProb.get(classEntry).get(token);
+            }
+
+            result.put(classEntry, score);
+            System.out.println(classEntry + ": " + score);
+        }
+
+        for(String className : result.keySet()) {
+            if (resultClass == null) {
+                resultClass = className;
+            } else if (result.get(className) > result.get(resultClass)) {
+                resultClass = className;
+            }
+        }
+
+        return resultClass;
     }
 
     public void train(File file) {
@@ -39,7 +71,7 @@ public class Classifier {
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
-            prior.put(classEntry, Math.log(((double)docsInThisClass/(double)numberOfDocuments)));
+            prior.put(classEntry, Math.log((double)(docsInThisClass/numberOfDocuments)));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
 
             for(String word : vocabulary.get(classEntry).keySet()) {
@@ -53,5 +85,11 @@ public class Classifier {
 
         knowledgeBase.setPrior(prior);
         knowledgeBase.setCondProb(condProb);
+        knowledgeBase.setClasses(classes);
     }
+
+    public static Classifier getInstance() {
+        return instance;
+    }
+
 }

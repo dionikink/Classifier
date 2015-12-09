@@ -19,4 +19,16 @@ public class Document {
     public Document(Map<String, Integer> bagOfWords) {
         this.bagOfWords = bagOfWords;
     }
+
+    public Map<String, Integer> getBagOfWords() {
+        return bagOfWords;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

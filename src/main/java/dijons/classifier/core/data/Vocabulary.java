@@ -12,7 +12,6 @@ import java.util.zip.ZipFile;
 public class Vocabulary {
 
     private Map<String, Map<String, Integer>> vocabulary;
-    private static Map<String, Integer> docsInClass;
 
     public Vocabulary(File file) {
         try {
@@ -38,7 +37,4 @@ public class Vocabulary {
     public Map<String, Map<String, Integer>> getVocabulary() {
         return this.vocabulary;
     }
-
-
-
 }

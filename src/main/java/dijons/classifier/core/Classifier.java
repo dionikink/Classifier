@@ -35,11 +35,11 @@ public class Classifier {
 
         List<String> classes = v.getClasses();
         Map<String, Integer> docsInClass = DataUtils.countDocsInClass(file);
-        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass(v);
+        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
-            prior.put(classEntry, Math.log((double)(docsInThisClass/numberOfDocuments)));
+            prior.put(classEntry, Math.log(((double)docsInThisClass/(double)numberOfDocuments)));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
 
             for(String word : vocabulary.get(classEntry).keySet()) {
@@ -53,6 +53,5 @@ public class Classifier {
 
         knowledgeBase.setPrior(prior);
         knowledgeBase.setCondProb(condProb);
-
     }
 }

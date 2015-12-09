@@ -15,6 +15,8 @@ import java.util.zip.ZipFile;
 public class DataUtils {
 
     private static HashMap<String, Integer> bagOfWords;
+    private static HashMap<String, Map<String,Integer>> noOfOccurrences;
+    private static Map<String,Integer> totalWordCount;
 
     public static Map<String, Map<String, Integer>> extractVocabulary(File file) throws IOException{
 
@@ -24,6 +26,8 @@ public class DataUtils {
         count(entries);
         entries = zipFile.entries();
         String categoryName = null;
+        noOfOccurrences = new HashMap<String, Map<String,Integer>>();
+        totalWordCount = new HashMap<String, Integer>();
 
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
@@ -32,10 +36,11 @@ public class DataUtils {
                     result.put(categoryName, bagOfWords);
                 }
                 bagOfWords = new HashMap<String, Integer>();
+                totalWordCount = new HashMap<String, Integer>();
                 categoryName = entry.getName().replaceAll("[^a-z A-Z]", "");
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-                List<String> uniqueWords = getUniqueWords(bufferedReader);
+                List<String> uniqueWords = getUniqueWords(bufferedReader, categoryName);
                 addUniqueWordsToBag(uniqueWords);
             }
         }
@@ -55,8 +60,9 @@ public class DataUtils {
         }
     }
 
-    public static List<String> getUniqueWords(BufferedReader bufferedReader) throws IOException {
+    public static List<String> getUniqueWords(BufferedReader bufferedReader, String className) throws IOException {
         List<String> result = new ArrayList<String>();
+
         String string = "";
         String s;
         while((s = bufferedReader.readLine()) != null) {
@@ -69,6 +75,16 @@ public class DataUtils {
             if(!result.contains(wordArray[i])) {
                 result.add(wordArray[i]);
             }
+            if(totalWordCount.containsKey(wordArray[i])) {
+                totalWordCount.replace(wordArray[i], totalWordCount.get(wordArray[i]) + 1);
+            } else {
+                totalWordCount.put(wordArray[i], 1);
+            }
+        }
+        if (noOfOccurrences.containsKey(className)) {
+            noOfOccurrences.replace(className, totalWordCount);
+        } else {
+            noOfOccurrences.put(className, totalWordCount);
         }
         return result;
     }
@@ -140,9 +156,8 @@ public class DataUtils {
         return docsInClass;
     }
 
-    public static Map<String, Integer> countWordsInClass(Vocabulary v) {
-        Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
-
+    public static Map<String, Integer> countWordsInClass() {
+        Map<String, Map<String,Integer>> vocabulary = noOfOccurrences;
         Map<String, Integer> wordsInClass = new HashMap<String, Integer>();
 
         for(String classEntry : vocabulary.keySet()) {
@@ -151,7 +166,6 @@ public class DataUtils {
             for(String wordEntry : vocabulary.get(classEntry).keySet()) {
                 size = size + vocabulary.get(classEntry).get(wordEntry) + 1;
             }
-
             wordsInClass.put(classEntry, size);
         }
         return wordsInClass;

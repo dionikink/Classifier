@@ -17,23 +17,42 @@ public class Classifier {
 
     private KnowledgeBase knowledgeBase;
 
+    public Classifier() {
+        this.knowledgeBase = new KnowledgeBase();
+    }
+
     public void apply(File file) {
 
     }
 
     public void train(File file) {
         Vocabulary v = new Vocabulary(file);
+        Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
+
         int numberOfDocuments = KnowledgeBase.numberOfDocuments;
         Map<String, Double> prior = new HashMap<String, Double>();
         Map<String, Map<String, Double>> condProb = new HashMap<String, Map<String, Double>>();
 
         List<String> classes = v.getClasses();
         Map<String, Integer> docsInClass = DataUtils.countDocsInClass(file);
+        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass(v);
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
             prior.put(classEntry, Math.log((double)(docsInThisClass/numberOfDocuments)));
+            Map<String, Double> condProbInClass = new HashMap<String, Double>();
 
+            for(String word : vocabulary.get(classEntry).keySet()) {
+                double tct = (double) vocabulary.get(classEntry).get(word) + 1;
+                double wordsInThisClass = (double) wordsInClass.get(classEntry);
+                condProbInClass.put(word, Math.log((tct/wordsInThisClass)));
+            }
+
+            condProb.put(classEntry, condProbInClass);
         }
+
+        knowledgeBase.setPrior(prior);
+        knowledgeBase.setCondProb(condProb);
+
     }
 }

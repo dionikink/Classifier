@@ -35,20 +35,10 @@ public class Vocabulary {
         return classes;
     }
 
-    public Map<String, Integer> countWordsInClass() {
-        Map<String, Integer> wordsInClass = new HashMap<String, Integer>();
-
-        for(String classEntry : vocabulary.keySet()) {
-            int size = 0;
-
-            for(String wordEntry : vocabulary.get(classEntry).keySet()) {
-                size = size + vocabulary.get(classEntry).get(wordEntry);
-            }
-
-            wordsInClass.put(classEntry, size);
-        }
-        return wordsInClass;
+    public Map<String, Map<String, Integer>> getVocabulary() {
+        return this.vocabulary;
     }
+
 
 
 }

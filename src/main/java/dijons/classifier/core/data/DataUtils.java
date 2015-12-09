@@ -139,4 +139,21 @@ public class DataUtils {
 
         return docsInClass;
     }
+
+    public static Map<String, Integer> countWordsInClass(Vocabulary v) {
+        Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
+
+        Map<String, Integer> wordsInClass = new HashMap<String, Integer>();
+
+        for(String classEntry : vocabulary.keySet()) {
+            int size = 0;
+
+            for(String wordEntry : vocabulary.get(classEntry).keySet()) {
+                size = size + vocabulary.get(classEntry).get(wordEntry) + 1;
+            }
+
+            wordsInClass.put(classEntry, size);
+        }
+        return wordsInClass;
+    }
 }

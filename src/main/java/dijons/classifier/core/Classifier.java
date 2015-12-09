@@ -37,6 +37,7 @@ public class Classifier {
 
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
+            System.out.println("Prior (" + classEntry + "): " + prior);
 
             for(String token : condProb.get(classEntry).keySet()) {
                 score += condProb.get(classEntry).get(token);

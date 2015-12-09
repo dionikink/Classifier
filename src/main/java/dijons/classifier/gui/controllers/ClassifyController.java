@@ -69,17 +69,7 @@ public class ClassifyController {
         Classifier c = Classifier.getInstance();
         String result = c.apply(selectedFile);
 
-        Alert resultPrompt = new Alert(Alert.AlertType.WARNING);
-        resultPrompt.setTitle("Result!");
-        resultPrompt.setHeaderText(null);
-
-        if (result != null) {
-            resultPrompt.setContentText("This document is classified as: " + result);
-        } else {
-            resultPrompt.setContentText("Could not classify this document.");
-        }
-
-        resultPrompt.showAndWait();
+        System.out.println("Result: " + result);
     }
 
     public void btnCancelClicked() {

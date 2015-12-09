@@ -6,6 +6,8 @@ import dijons.classifier.core.data.KnowledgeBase;
 import dijons.classifier.core.data.Vocabulary;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,7 @@ public class Classifier {
 
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
-            System.out.println("Prior (" + classEntry + "): " + prior);
+            System.out.println("Prior (" + classEntry + "): " + score);
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
@@ -89,6 +91,59 @@ public class Classifier {
         knowledgeBase.setPrior(prior);
         knowledgeBase.setCondProb(condProb);
         knowledgeBase.setClasses(classes);
+    }
+
+    public void test(File file, File output) {
+        List<Document> documents = null;
+        Map<String, Double> prior = knowledgeBase.getPrior();
+        Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
+        List<String> classes = knowledgeBase.getClasses();
+
+        try {
+            documents = DataUtils.extractDocuments(file);
+        } catch (IOException e) {
+            System.err.println("Could not extract documents from this file.");
+        }
+
+        PrintWriter pw = null;
+
+        try {
+            pw = new PrintWriter(output + "/result.txt");
+        } catch (IOException e) {
+            System.err.println("Could not write output file.");
+        }
+
+        for(Document document : documents) {
+            String resultClass = null;
+
+            Map<String, Integer> tokens = document.getBagOfWords();
+            Map<String, Double> result = new HashMap<String, Double>();
+
+            for(String classEntry : classes) {
+                double score = prior.get(classEntry);
+
+                for(String token : tokens.keySet()) {
+                    if (condProb.get(classEntry).containsKey(token)) {
+                        score += condProb.get(classEntry).get(token);
+                    }
+                }
+
+                result.put(classEntry, score);
+            }
+
+            for(String className : result.keySet()) {
+                if (resultClass == null) {
+                    resultClass = className;
+                } else if (result.get(className) > result.get(resultClass)) {
+                    resultClass = className;
+                }
+            }
+
+            pw.println(document.getName() + ": " + resultClass);
+        }
+
+        pw.flush();
+        pw.close();
     }
 
     public static Classifier getInstance() {

@@ -24,7 +24,7 @@ public class TestStage {
 
         Stage stage = new Stage();
         stage.setTitle("Test classifier");
-        stage.setScene(new Scene(main, 428, 111));
+        stage.setScene(new Scene(main, 428, 167));
         stage.setResizable(false);
         stage.show();
     }

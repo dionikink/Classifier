@@ -11,6 +11,7 @@ public class Document {
 
     private Map<String, Integer> bagOfWords;
     private String category;
+    private String name;
 
     public Document() {
         this.bagOfWords = new HashMap<String, Integer>();
@@ -30,5 +31,13 @@ public class Document {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

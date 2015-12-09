@@ -183,6 +183,7 @@ public class DataUtils {
             }
             if (!string.equals("")) {
                 Document document = DataUtils.tokenizer(string);
+                document.setName(entry.getName());
                 result.add(document);
             }
         }

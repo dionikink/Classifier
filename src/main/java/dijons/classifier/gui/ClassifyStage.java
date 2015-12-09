@@ -22,7 +22,7 @@ public class ClassifyStage {
 
         Stage stage = new Stage();
         stage.setTitle("Classify data");
-        stage.setScene(new Scene(main, 428, 167));
+        stage.setScene(new Scene(main, 428, 111));
         stage.setResizable(false);
         stage.show();
     }

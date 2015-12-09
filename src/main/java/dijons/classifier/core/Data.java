@@ -6,4 +6,5 @@ package dijons.classifier.core;
  */
 public class Data {
 
+
 }

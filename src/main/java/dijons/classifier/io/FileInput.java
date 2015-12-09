@@ -1,10 +1,11 @@
 package dijons.classifier.io;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
+import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -17,15 +18,8 @@ public class FileInput {
     ZipFile class1;
     ZipFile class2;
 
-    public HashMap<String, List<String>> getMap() {
-        return map;
-    }
-
-    public void setMap(HashMap<String, List<String>> map) {
-        this.map = map;
-    }
-
-    HashMap<String, List<String>> map;
+    HashMap<String, Integer> map1;
+    HashMap<String, Integer> map2;
 
     public FileInput(String address1, String address2) throws IOException {
         try {
@@ -40,29 +34,37 @@ public class FileInput {
     public void tokenizeData() throws IOException {
         Enumeration<? extends ZipEntry> entriesClass1 = class1.entries();
         Enumeration<? extends ZipEntry> entriesClass2 = class2.entries();
-        map = new HashMap<String, List<String>>();
-        map = getClassContent(map, entriesClass1, "Class 1");
-//        map = getClassContent(map, entriesClass2, "Class 2");
+        map1 = getBagOfWordsMap(entriesClass1, true);
+        map2 = getBagOfWordsMap(entriesClass2, false);
     }
 
-    /*
-    Werkt niet echt lekker
-     */
-    public HashMap<String, List<String>> getClassContent(HashMap<String, List<String>> givenMap, Enumeration<? extends  ZipEntry> entries, String className) throws IOException {
-        List<String> zipEntry = new ArrayList<String>();
+    public HashMap<String, Integer> getBagOfWordsMap(Enumeration<? extends ZipEntry> entries, boolean isClass1) throws IOException {
+        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        String s;
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
-            InputStream inputStream = class1.getInputStream(entry);
-            DataInputStream dataInputStream = new DataInputStream(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            BufferedReader bufferedReader;
+            if (isClass1) {
+                bufferedReader = new BufferedReader(new InputStreamReader(class1.getInputStream(entry)));
+            } else {
+                bufferedReader = new BufferedReader(new InputStreamReader(class2.getInputStream(entry)));
+            }
             String string;
             while((string = bufferedReader.readLine()) != null) {
-                string = string.trim();
-                System.out.println(string);
+                string = string.toLowerCase();
+                string = string.replaceAll("[^a-z \\s]", "");
+                StringTokenizer stringTokenizer = new StringTokenizer(string);
+                while(stringTokenizer.hasMoreElements()) {
+                    s = stringTokenizer.nextToken();
+                    if (result.containsKey(s)) {
+                        result.replace(s, result.get(s) + 1);
+                    } else {
+                        result.put(s, 1);
+                    }
+                }
             }
         }
-        givenMap.put(className, zipEntry);
-        return givenMap;
+        return result;
     }
 
     public static void main(String[] args) {
@@ -73,9 +75,21 @@ public class FileInput {
             e.printStackTrace();
         }
         if (fileInput != null) {
-            for (String s : fileInput.getMap().keySet()) {
-                System.out.println(fileInput.getMap().get(s));
+            System.out.println("Class 1:");
+            for (String s : fileInput.getMap1().keySet()) {
+                System.out.println(s + "\t\t" + fileInput.getMap1().get(s));
+            }
+            System.out.println("Class 2:");
+            for (String s : fileInput.getMap2().keySet()) {
+                System.out.println(s + "\t\t" + fileInput.getMap2().get(s));
             }
         }
+    }
+
+    public HashMap<String, Integer> getMap1() {
+        return map1;
+    }
+    public HashMap<String, Integer> getMap2() {
+        return map2;
     }
 }

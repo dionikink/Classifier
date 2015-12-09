@@ -38,6 +38,7 @@ public class DataUtils {
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
                 List<String> uniqueWords = getUniqueWords(bufferedReader, categoryName);
+                bufferedReader.close();
                 addUniqueWordsToBag(uniqueWords);
             }
         }

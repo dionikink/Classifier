@@ -39,8 +39,10 @@ public class Classifier {
             double score = prior.get(classEntry);
             System.out.println("Prior (" + classEntry + "): " + prior);
 
-            for(String token : condProb.get(classEntry).keySet()) {
-                score += condProb.get(classEntry).get(token);
+            for(String token : tokens.keySet()) {
+                if (condProb.get(classEntry).containsKey(token)) {
+                    score += condProb.get(classEntry).get(token);
+                }
             }
 
             result.put(classEntry, score);
@@ -72,7 +74,7 @@ public class Classifier {
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
-            prior.put(classEntry, Math.log((double)(docsInThisClass/numberOfDocuments)));
+            prior.put(classEntry, Math.log(((double)docsInThisClass/(double)numberOfDocuments)));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
 
             for(String word : vocabulary.get(classEntry).keySet()) {

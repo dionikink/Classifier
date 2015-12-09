@@ -2,14 +2,13 @@ package dijons.classifier.io;
 
 import dijons.classifier.core.data.Document;
 
+import javax.print.Doc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.StringTokenizer;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -19,7 +18,25 @@ import java.util.zip.ZipFile;
  */
 public class InputHandler {
 
-    public HashMap<String, ArrayList<Document>> getDocumentListForTraining(File file) throws IOException{
+    public ArrayList<Document> getDocumentListForClassifying(File file) throws IOException{
+        ArrayList<Document> result = new ArrayList<Document>();
+        ZipFile zipFile = new ZipFile(file);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while(entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
+            String string = "";
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                string = string + s;
+            }
+            Document document = tokenizer(string);
+            result.add(document);
+        }
+        return result;
+    }
+
+    public HashMap<String, ArrayList<Document>> getDocumentMapForTraining(File file) throws IOException{
         HashMap<String,ArrayList<Document>> result = new HashMap<String, ArrayList<Document>>();
         ArrayList<Document> arrayList = new ArrayList<Document>();
         ZipFile zipFile = new ZipFile(file);
@@ -53,9 +70,14 @@ public class InputHandler {
         InputHandler inputHandler = new InputHandler();
         File file = new File("C:\\Users\\jensj.r\\Downloads\\blogs.zip");
         try {
-            HashMap<String, ArrayList<Document>> hoi = inputHandler.getDocumentListForTraining(file);
+            HashMap<String, ArrayList<Document>> hoi = inputHandler.getDocumentMapForTraining(file);
             for ( String s : hoi.keySet()) {
                 System.out.println(s + ": ");
+                for (Document d : hoi.get(s)) {
+                    for (String s1 : d.getBagOfWords().keySet()) {
+                        System.out.println(d.getBagOfWords().get(s1));
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

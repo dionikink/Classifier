@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.ZipFile;
 
 /**
@@ -47,8 +48,7 @@ public class TrainController {
 
     public void btnTrainClicked() {
         try {
-            ArrayList<Document> arrayList = inputHandler.getDocumentListForTraining(selectedFile);
-
+            HashMap<String, ArrayList<Document>> arrayList = inputHandler.getDocumentListForTraining(selectedFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

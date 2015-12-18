@@ -48,13 +48,12 @@ public class Classifier {
             }
 
             result.put(classEntry, score);
-            System.out.println(classEntry + ": " + score);
         }
 
         for(String className : result.keySet()) {
             if (resultClass == null) {
                 resultClass = className;
-            } else if (result.get(className) > result.get(resultClass)) {
+            } else if (result.get(className) < result.get(resultClass)) {
                 resultClass = className;
             }
         }

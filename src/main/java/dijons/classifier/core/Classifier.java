@@ -119,34 +119,35 @@ public class Classifier {
 
         if (documents != null && pw != null) {
             for (Document document : documents) {
-                String resultClass = null;
+                String resultClass = apply(document);
 
-                Map<String, Integer> tokens = document.getBagOfWords();
-                Map<String, Double> result = new HashMap<String, Double>();
-
-                for (String classEntry : classes) {
-                    double score = prior.get(classEntry);
-
-                    for (String token : tokens.keySet()) {
-                        if (condProb.get(classEntry).containsKey(token)) {
-                            score += condProb.get(classEntry).get(token);
-                        }
-                    }
-
-                    result.put(classEntry, score);
-                }
-
-                for (String className : result.keySet()) {
-                    if (resultClass == null) {
-                        resultClass = className;
-                    } else if (result.get(className) < result.get(resultClass)) {
-                        resultClass = className;
-                    }
-                }
+//                Map<String, Integer> tokens = document.getBagOfWords();
+//                Map<String, Double> result = new HashMap<String, Double>();
+//
+//                for (String classEntry : classes) {
+//                    double score = prior.get(classEntry);
+//
+//                    for (String token : tokens.keySet()) {
+//                        if (condProb.get(classEntry).containsKey(token)) {
+//                            score += condProb.get(classEntry).get(token);
+//                        }
+//                    }
+//
+//                    result.put(classEntry, score);
+//                }
+//
+//                for (String className : result.keySet()) {
+//                    if (resultClass == null) {
+//                        resultClass = className;
+//                    } else if (result.get(className) < result.get(resultClass)) {
+//                        resultClass = className;
+//                    }
+//                }
 
                 pw.println(document.getName() + ": " + resultClass);
             }
         }
+
         if (pw != null) {
             pw.flush();
             pw.close();

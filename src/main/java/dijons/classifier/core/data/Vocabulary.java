@@ -15,7 +15,7 @@ public class Vocabulary {
 
     private static final Vocabulary instance = new Vocabulary();
 
-    private List<String> stopwords = new ArrayList<String>();
+    private List<String> stopwords = fillList();
 
     private Map<String, Map<String, Integer>> vocabulary;
 

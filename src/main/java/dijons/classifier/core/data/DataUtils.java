@@ -110,16 +110,18 @@ public class DataUtils {
 
     public static Document tokenizer(String data) {
         HashMap<String, Integer> bagOfWords = new HashMap<String, Integer>();
-
+        List<String> stopwords = Vocabulary.getInstance().getStopwords();
         String string = data.toLowerCase();
         string = string.replaceAll("[^a-z \\s]", "");
         StringTokenizer stringTokenizer = new StringTokenizer(string);
         while (stringTokenizer.hasMoreElements()) {
             string = stringTokenizer.nextToken();
-            if (bagOfWords.containsKey(string)) {
-                bagOfWords.replace(string, bagOfWords.get(string) + 1);
-            } else {
-                bagOfWords.put(string, 1);
+            if (!stopwords.contains(string)) {
+                if (bagOfWords.containsKey(string)) {
+                    bagOfWords.replace(string, bagOfWords.get(string) + 1);
+                } else {
+                    bagOfWords.put(string, 1);
+                }
             }
         }
         return new Document(bagOfWords);
@@ -199,7 +201,6 @@ public class DataUtils {
         Document result = null;
         String data = "";
         String newLine;
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
 

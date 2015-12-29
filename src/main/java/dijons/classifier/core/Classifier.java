@@ -31,7 +31,6 @@ public class Classifier {
         Map<String, Double> prior = knowledgeBase.getPrior();
         Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
         List<String> classes = knowledgeBase.getClasses();
-        List<String> stopwords = Vocabulary.getInstance().getStopwords();
         Map<String, Integer> tokens = document.getBagOfWords();
 
         Map<String, Double> result = new HashMap<String, Double>();
@@ -45,13 +44,11 @@ public class Classifier {
             double scoreForUnknownToken = 1/(classSize + uniqueWordCount);
 
             for(String token : tokens.keySet()) {
-                if (!stopwords.contains(token)) {
-                    if (condProb.get(classEntry).containsKey(token)) {
-                        score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
-                    } else {
-                        condProb.get(classEntry).put(token, scoreForUnknownToken);
-                        score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
-                    }
+                if (condProb.get(classEntry).containsKey(token)) {
+                    score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
+                } else {
+                    condProb.get(classEntry).put(token, scoreForUnknownToken);
+                    score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
             result.put(classEntry, score);
@@ -86,7 +83,6 @@ public class Classifier {
             prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
             double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
-
             for(String word : vocabulary.get(classEntry).keySet()) {
                 double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
                 condProbInClass.put(word, log2(wordOccurrencesInClass/wordsInThisClass));

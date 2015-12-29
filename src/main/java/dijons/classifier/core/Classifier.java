@@ -38,16 +38,17 @@ public class Classifier {
 
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
+            double uniqueWordCount = Vocabulary.getInstance().getUniqueWordCount();
+            Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
+            double classSize = wordsInClass.get(classEntry);
+            double scoreForUnknownToken = 1/(classSize + uniqueWordCount);
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
-                    score +=  Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
+                    score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
                 } else {
-                    Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
-                    double classSize = wordsInClass.get(classEntry);
-                    double newScoreForToken = 1/(classSize + Vocabulary.getInstance().getUniqueWordCount());
-                    condProb.get(classEntry).put(token, newScoreForToken);
-                    score += Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
+                    condProb.get(classEntry).put(token, scoreForUnknownToken);
+                    score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
             result.put(classEntry, score);
@@ -56,7 +57,7 @@ public class Classifier {
         for(String className : result.keySet()) {
             if (resultClass == null) {
                 resultClass = className;
-            } else if (result.get(className) >= result.get(resultClass)) {
+            } else if (result.get(className) > result.get(resultClass)) {
                 resultClass = className;
             }
         }
@@ -81,11 +82,10 @@ public class Classifier {
             int docsInThisClass = docsInClass.get(classEntry);
             prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
+            double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
 
             for(String word : vocabulary.get(classEntry).keySet()) {
                 double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
-                double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
-
                 condProbInClass.put(word, log2(wordOccurrencesInClass/wordsInThisClass));
             }
 
@@ -99,9 +99,6 @@ public class Classifier {
 
     public void test(File file, File output) {
         List<Document> documents = null;
-        Map<String, Double> prior = knowledgeBase.getPrior();
-        Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
-        List<String> classes = knowledgeBase.getClasses();
 
         try {
             documents = DataUtils.extractDocuments(file);
@@ -120,30 +117,7 @@ public class Classifier {
         if (documents != null && pw != null) {
             for (Document document : documents) {
                 String resultClass = apply(document);
-
-//                Map<String, Integer> tokens = document.getBagOfWords();
-//                Map<String, Double> result = new HashMap<String, Double>();
-//
-//                for (String classEntry : classes) {
-//                    double score = prior.get(classEntry);
-//
-//                    for (String token : tokens.keySet()) {
-//                        if (condProb.get(classEntry).containsKey(token)) {
-//                            score += condProb.get(classEntry).get(token);
-//                        }
-//                    }
-//
-//                    result.put(classEntry, score);
-//                }
-//
-//                for (String className : result.keySet()) {
-//                    if (resultClass == null) {
-//                        resultClass = className;
-//                    } else if (result.get(className) < result.get(resultClass)) {
-//                        resultClass = className;
-//                    }
-//                }
-
+                System.out.println(document.getName() + ": " + resultClass);
                 pw.println(document.getName() + ": " + resultClass);
             }
         }
@@ -160,5 +134,15 @@ public class Classifier {
 
     public double log2(double x) {
         return Math.log(x)/Math.log(2.0d);
+    }
+
+    public double multiply(double x, int multiplier) {
+        double result = 0;
+
+        for(int i = 0; i < multiplier; i++) {
+            result += x;
+        }
+
+        return result;
     }
 }

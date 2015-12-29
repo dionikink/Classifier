@@ -42,18 +42,15 @@ public class Classifier {
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
-                    System.out.println("For " + token + " add " + Math.pow(condProb.get(classEntry).get(token), tokens.get(token)));
                     score = score *  Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 } else {
                     Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
                     double classSize = wordsInClass.get(classEntry);
-                    double newScoreForToken = 1/();
-                    condProb.get(classEntry).put(token, )
+                    double newScoreForToken = 1/(classSize + Vocabulary.getInstance().getUniqueWordCount());
+                    condProb.get(classEntry).put(token, newScoreForToken);
+                    score = score * Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
-
-            System.out.println("Score for class " + classEntry + ": " + score);
-            System.out.println();
             result.put(classEntry, score);
         }
 
@@ -69,7 +66,7 @@ public class Classifier {
     }
 
     public void train(File file) {
-        Vocabulary v = new Vocabulary();
+        Vocabulary v = Vocabulary.getInstance();
         v.addFile(file);
         Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
 
@@ -91,7 +88,6 @@ public class Classifier {
                 double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
 
                 condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);
-                System.out.println(word + "|" + classEntry + " = " + wordOccurrencesInClass + "/" + wordsInThisClass);
             }
 
             condProb.put(classEntry, condProbInClass);

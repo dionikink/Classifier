@@ -83,10 +83,8 @@ public class DataUtils {
         for (int i = 0; i < wordArray.length; i++) {
             if (bagOfWords.containsKey(wordArray[i])) {
                 bagOfWords.replace(wordArray[i], bagOfWords.get(wordArray[i]) + 1);
-                System.out.println("HEEJ " + wordArray[i] + " " + bagOfWords.get(wordArray[i]));
             } else {
                 bagOfWords.put(wordArray[i], 1);
-                System.out.println("HOI " + wordArray[i] + " " + bagOfWords.get(wordArray[i]));
             }
         }
     }

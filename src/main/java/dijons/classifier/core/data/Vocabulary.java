@@ -28,7 +28,6 @@ public class Vocabulary {
         for(Map.Entry<String, Map<String, Integer>> entry : vocabulary.entrySet()) {
             if (!classes.contains(entry.getKey())) {
                 classes.add(entry.getKey());
-                System.out.println(entry.getKey());
             }
         }
 

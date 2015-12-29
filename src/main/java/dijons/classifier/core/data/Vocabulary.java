@@ -35,6 +35,22 @@ public class Vocabulary {
         return classes;
     }
 
+    public double getUniqueWordCount() {
+        double result = 0;
+        List<String> countedWords = new ArrayList<String>();
+
+        for(String classEntry : vocabulary.keySet()) {
+            for(String word : vocabulary.get(classEntry).keySet()) {
+                if(!countedWords.contains(word)) {
+                    result++;
+                    countedWords.add(word);
+                }
+            }
+        }
+
+        return result;
+    }
+
     public Map<String, Map<String, Integer>> getVocabulary() {
         return this.vocabulary;
     }

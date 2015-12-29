@@ -13,6 +13,8 @@ public class KnowledgeBase {
     public static int numberOfDocuments = 0;
     public static int numberOfCategories = 0;
 
+    public static DataSet data;
+
     private Map<String, Double> prior;
     private Map<String, Map<String, Double>> condProb;
     private List<String> classes;

@@ -9,7 +9,7 @@
       <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the source file (*.txt)" />
       <TextField fx:id="txtSelected" editable="false" layoutX="14.0" layoutY="37.0" prefHeight="25.0" prefWidth="324.0" />
       <Button fx:id="btnBrowse" layoutX="348.0" layoutY="37.0" mnemonicParsing="false" onAction="#btnBrowseClicked" text="Browse" />
-      <Button fx:id="btnClassify" disable="true" layoutX="368.0" layoutY="73.0" mnemonicParsing="false" onAction="#btnClassifyClicked" text="Test" />
+      <Button fx:id="btnClassify" disable="true" layoutX="368.0" layoutY="73.0" mnemonicParsing="false" onAction="#btnClassifyClicked" text="Classify" />
       <Button fx:id="btnCancel" layoutX="296.0" layoutY="72.0" mnemonicParsing="false" onAction="#btnCancelClicked" text="Cancel" />
    </children>
 </Pane>

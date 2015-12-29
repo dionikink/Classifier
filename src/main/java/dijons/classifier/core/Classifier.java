@@ -43,17 +43,19 @@ public class Classifier {
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
-                    score += condProb.get(classEntry).get(token);
+                    score = score * condProb.get(classEntry).get(token);
                 }
             }
 
+            System.out.println("Score for class " + classEntry + ": " + score);
+            System.out.println();
             result.put(classEntry, score);
         }
 
         for(String className : result.keySet()) {
             if (resultClass == null) {
                 resultClass = className;
-            } else if (result.get(className) < result.get(resultClass)) {
+            } else if (result.get(className) >= result.get(resultClass)) {
                 resultClass = className;
             }
         }
@@ -71,17 +73,19 @@ public class Classifier {
 
         List<String> classes = v.getClasses();
         Map<String, Integer> docsInClass = DataUtils.countDocsInClass(file);
-        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
+        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass(v);
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
-            prior.put(classEntry, Math.log(((double)docsInThisClass/(double)numberOfDocuments)));
+            prior.put(classEntry, ((double)docsInThisClass/(double)numberOfDocuments));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
 
             for(String word : vocabulary.get(classEntry).keySet()) {
-                double tct = (double) vocabulary.get(classEntry).get(word) + 1;
-                double wordsInThisClass = (double) wordsInClass.get(classEntry);
-                condProbInClass.put(word, Math.log((tct/wordsInThisClass)));
+                double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
+                double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
+
+                condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);
+                System.out.println(word + "|" + classEntry + " = " + wordOccurrencesInClass + "/" + wordsInThisClass);
             }
 
             condProb.put(classEntry, condProbInClass);

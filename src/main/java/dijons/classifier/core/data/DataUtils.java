@@ -11,20 +11,16 @@ import java.util.zip.ZipFile;
  */
 public class DataUtils {
 
-    private static HashMap<String, Integer> bagOfWords;
-    private static HashMap<String, Map<String,Integer>> noOfOccurrences;
-    private static Map<String,Integer> totalWordCount;
+    private static Map<String, Integer> bagOfWords;
 
     public static Map<String, Map<String, Integer>> extractVocabulary(File file) throws IOException{
-
+        KnowledgeBase.data = new DataSet();
         Map<String, Map<String,Integer>> result = new HashMap<String, Map<String, Integer>>();
         ZipFile zipFile = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         count(entries);
         entries = zipFile.entries();
         String categoryName = null;
-        noOfOccurrences = new HashMap<String, Map<String,Integer>>();
-        totalWordCount = new HashMap<String, Integer>();
 
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
@@ -33,7 +29,6 @@ public class DataUtils {
                     result.put(categoryName, bagOfWords);
                 }
                 bagOfWords = new HashMap<String, Integer>();
-                totalWordCount = new HashMap<String, Integer>();
                 categoryName = entry.getName().replaceAll("[^a-z A-Z]", "");
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
@@ -45,6 +40,7 @@ public class DataUtils {
         if (categoryName != null && bagOfWords != null) {
             result.put(categoryName, bagOfWords);
         }
+
         return result;
     }
 
@@ -59,6 +55,8 @@ public class DataUtils {
     }
 
     public static List<String> getUniqueWords(BufferedReader bufferedReader, String className) throws IOException {
+        Map<String, Map<String, Integer>> noOfOccurrences = KnowledgeBase.data.getNoOfOccurrences();
+        Map<String, Integer> totalWordCount = new HashMap<String, Integer>();
         List<String> result = new ArrayList<String>();
 
         String string = "";
@@ -84,6 +82,9 @@ public class DataUtils {
         } else {
             noOfOccurrences.put(className, totalWordCount);
         }
+
+        KnowledgeBase.data.setNoOfOccurrences(noOfOccurrences);
+        KnowledgeBase.data.setTotalWordCount(totalWordCount);
         return result;
     }
 
@@ -154,15 +155,15 @@ public class DataUtils {
         return docsInClass;
     }
 
-    public static Map<String, Integer> countWordsInClass() {
-        Map<String, Map<String,Integer>> vocabulary = noOfOccurrences;
+    public static Map<String, Integer> countWordsInClass(Vocabulary v) {
+        Map<String, Map<String,Integer>> vocabulary = v.getVocabulary();
         Map<String, Integer> wordsInClass = new HashMap<String, Integer>();
 
         for(String classEntry : vocabulary.keySet()) {
             int size = 0;
 
             for(String wordEntry : vocabulary.get(classEntry).keySet()) {
-                size = size + vocabulary.get(classEntry).get(wordEntry) + 1;
+                size = size + vocabulary.get(classEntry).get(wordEntry);
             }
             wordsInClass.put(classEntry, size);
         }

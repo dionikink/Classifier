@@ -31,7 +31,7 @@ public class Classifier {
         Map<String, Double> prior = knowledgeBase.getPrior();
         Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
         List<String> classes = knowledgeBase.getClasses();
-
+        List<String> stopwords = Vocabulary.getInstance().getStopwords();
         Map<String, Integer> tokens = document.getBagOfWords();
 
         Map<String, Double> result = new HashMap<String, Double>();
@@ -45,11 +45,13 @@ public class Classifier {
             double scoreForUnknownToken = 1/(classSize + uniqueWordCount);
 
             for(String token : tokens.keySet()) {
-                if (condProb.get(classEntry).containsKey(token)) {
-                    score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
-                } else {
-                    condProb.get(classEntry).put(token, scoreForUnknownToken);
-                    score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
+                if (!stopwords.contains(token)) {
+                    if (condProb.get(classEntry).containsKey(token)) {
+                        score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
+                    } else {
+                        condProb.get(classEntry).put(token, scoreForUnknownToken);
+                        score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
+                    }
                 }
             }
             result.put(classEntry, score);

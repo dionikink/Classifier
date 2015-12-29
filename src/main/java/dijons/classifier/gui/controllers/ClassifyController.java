@@ -1,8 +1,10 @@
 package dijons.classifier.gui.controllers;
 
 import dijons.classifier.core.Classifier;
+import dijons.classifier.core.data.DataUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -24,7 +26,7 @@ public class ClassifyController {
 
     public void btnClassifyClicked() {
         Classifier c = Classifier.getInstance();
-        String result = c.apply(selectedFile);
+        String result = c.apply(DataUtils.extractDocument(selectedFile));
 
         System.out.println("Result: " + result);
 

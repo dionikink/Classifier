@@ -26,13 +26,12 @@ public class Classifier {
         this.knowledgeBase = new KnowledgeBase();
     }
 
-    public String apply(File file) {
+    public String apply(Document document) {
         String resultClass = null;
         Map<String, Double> prior = knowledgeBase.getPrior();
         Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
         List<String> classes = knowledgeBase.getClasses();
 
-        Document document = DataUtils.extractDocument(file);
         Map<String, Integer> tokens = document.getBagOfWords();
 
         Map<String, Double> result = new HashMap<String, Double>();
@@ -118,37 +117,40 @@ public class Classifier {
             System.err.println("Could not write output file.");
         }
 
-        for(Document document : documents) {
-            String resultClass = null;
+        if (documents != null && pw != null) {
+            for (Document document : documents) {
+                String resultClass = null;
 
-            Map<String, Integer> tokens = document.getBagOfWords();
-            Map<String, Double> result = new HashMap<String, Double>();
+                Map<String, Integer> tokens = document.getBagOfWords();
+                Map<String, Double> result = new HashMap<String, Double>();
 
-            for(String classEntry : classes) {
-                double score = prior.get(classEntry);
+                for (String classEntry : classes) {
+                    double score = prior.get(classEntry);
 
-                for(String token : tokens.keySet()) {
-                    if (condProb.get(classEntry).containsKey(token)) {
-                        score += condProb.get(classEntry).get(token);
+                    for (String token : tokens.keySet()) {
+                        if (condProb.get(classEntry).containsKey(token)) {
+                            score += condProb.get(classEntry).get(token);
+                        }
+                    }
+
+                    result.put(classEntry, score);
+                }
+
+                for (String className : result.keySet()) {
+                    if (resultClass == null) {
+                        resultClass = className;
+                    } else if (result.get(className) < result.get(resultClass)) {
+                        resultClass = className;
                     }
                 }
 
-                result.put(classEntry, score);
+                pw.println(document.getName() + ": " + resultClass);
             }
-
-            for(String className : result.keySet()) {
-                if (resultClass == null) {
-                    resultClass = className;
-                } else if (result.get(className) < result.get(resultClass)) {
-                    resultClass = className;
-                }
-            }
-
-            pw.println(document.getName() + ": " + resultClass);
         }
-
-        pw.flush();
-        pw.close();
+        if (pw != null) {
+            pw.flush();
+            pw.close();
+        }
     }
 
     public static Classifier getInstance() {

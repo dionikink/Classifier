@@ -39,11 +39,11 @@ public class Classifier {
 
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
-            System.out.println("Prior (" + classEntry + "): " + score);
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
-                    score = score * condProb.get(classEntry).get(token);
+                    System.out.println("For " + token + " add " + Math.pow(condProb.get(classEntry).get(token), tokens.get(token)));
+                    score = score *  Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
 

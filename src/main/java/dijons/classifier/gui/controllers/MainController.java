@@ -5,6 +5,7 @@ import dijons.classifier.gui.TestStage;
 import dijons.classifier.gui.TrainStage;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 
 /**
  * Created by jensj.r on 12/7/2015.
@@ -14,6 +15,8 @@ public class MainController {
 
     @FXML
     Parent main;
+    public Button btnClassify;
+    public Button btnTest;
 
     public void btnTrainClicked() {
         TrainStage trainStage = new TrainStage();

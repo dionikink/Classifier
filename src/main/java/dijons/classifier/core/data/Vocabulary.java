@@ -1,6 +1,8 @@
 package dijons.classifier.core.data;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.zip.ZipEntry;
@@ -65,6 +67,23 @@ public class Vocabulary {
 
     private List<String> fillList() {
         List<String> result = new ArrayList<String>();
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file;
+
+        try {
+            file = new File(classLoader.getResource("stopwords.txt").getFile());
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String nextLine;
+
+            while ((nextLine = bufferedReader.readLine()) != null) {
+                result.add(nextLine);
+            }
+        } catch (NullPointerException e) {
+            System.err.println("Could not open stopwords.txt");
+        } catch (IOException e) {
+            System.err.println("Could not read stopwords.txt");
+        }
 
         return result;
     }

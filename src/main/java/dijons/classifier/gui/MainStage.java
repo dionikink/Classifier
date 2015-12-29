@@ -1,7 +1,9 @@
 package dijons.classifier.gui;
 
+import dijons.classifier.gui.controllers.MainController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

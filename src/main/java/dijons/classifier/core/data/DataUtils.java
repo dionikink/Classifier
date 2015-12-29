@@ -32,9 +32,8 @@ public class DataUtils {
                 categoryName = entry.getName().replaceAll("[^a-z A-Z]", "");
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-                List<String> uniqueWords = getUniqueWords(bufferedReader, categoryName);
+                fillBagOfWords(bufferedReader, categoryName);
                 bufferedReader.close();
-                addUniqueWordsToBag(uniqueWords);
             }
         }
         if (categoryName != null && bagOfWords != null) {
@@ -44,39 +43,23 @@ public class DataUtils {
         return result;
     }
 
-    public static void addUniqueWordsToBag(List<String> uniqueWords) {
-        for (String word : uniqueWords) {
-            if (bagOfWords.containsKey(word)) {
-                bagOfWords.replace(word, bagOfWords.get(word) + 1);
-            } else {
-                bagOfWords.put(word, 1);
-            }
-        }
-    }
-
-    public static List<String> getUniqueWords(BufferedReader bufferedReader, String className) throws IOException {
+    public static void countTotalWords(String[] wordArray, String className) {
         Map<String, Map<String, Integer>> noOfOccurrences = KnowledgeBase.data.getNoOfOccurrences();
-        Map<String, Integer> totalWordCount = new HashMap<String, Integer>();
-        List<String> result = new ArrayList<String>();
-
-        String string = "";
-        String s;
-        while((s = bufferedReader.readLine()) != null) {
-            s = s.toLowerCase();
-            s = s.replaceAll("[^a-z \\s]", "");
-            string = string + s;
+        Map<String, Integer> totalWordCount;
+        if (!noOfOccurrences.containsKey(className)) {
+            totalWordCount = new HashMap<String, Integer>();
+        } else {
+            totalWordCount = KnowledgeBase.data.getTotalWordCount();
         }
-        String[] wordArray = string.split("\\s");
+
         for (int i = 0; i < wordArray.length; i++) {
-            if(!result.contains(wordArray[i])) {
-                result.add(wordArray[i]);
-            }
-            if(totalWordCount.containsKey(wordArray[i])) {
+            if (totalWordCount.containsKey(wordArray[i])) {
                 totalWordCount.replace(wordArray[i], totalWordCount.get(wordArray[i]) + 1);
             } else {
                 totalWordCount.put(wordArray[i], 1);
             }
         }
+
         if (noOfOccurrences.containsKey(className)) {
             noOfOccurrences.replace(className, totalWordCount);
         } else {
@@ -85,7 +68,27 @@ public class DataUtils {
 
         KnowledgeBase.data.setNoOfOccurrences(noOfOccurrences);
         KnowledgeBase.data.setTotalWordCount(totalWordCount);
-        return result;
+    }
+
+    public static void fillBagOfWords(BufferedReader bufferedReader, String className) throws IOException {
+        String string = "";
+        String s;
+        while((s = bufferedReader.readLine()) != null) {
+            s = s.toLowerCase();
+            s = s.replaceAll("[^a-z \\s]", "");
+            string = string + s;
+        }
+        String[] wordArray = string.split("\\s");
+        countTotalWords(wordArray, className);
+        for (int i = 0; i < wordArray.length; i++) {
+            if (bagOfWords.containsKey(wordArray[i])) {
+                bagOfWords.replace(wordArray[i], bagOfWords.get(wordArray[i]) + 1);
+                System.out.println("HEEJ " + wordArray[i] + " " + bagOfWords.get(wordArray[i]));
+            } else {
+                bagOfWords.put(wordArray[i], 1);
+                System.out.println("HOI " + wordArray[i] + " " + bagOfWords.get(wordArray[i]));
+            }
+        }
     }
 
     public static void count(Enumeration<? extends ZipEntry> entries) {
@@ -155,8 +158,8 @@ public class DataUtils {
         return docsInClass;
     }
 
-    public static Map<String, Integer> countWordsInClass(Vocabulary v) {
-        Map<String, Map<String,Integer>> vocabulary = v.getVocabulary();
+    public static Map<String, Integer> countWordsInClass() {
+        Map<String, Map<String,Integer>> vocabulary = KnowledgeBase.data.getNoOfOccurrences();
         Map<String, Integer> wordsInClass = new HashMap<String, Integer>();
 
         for(String classEntry : vocabulary.keySet()) {

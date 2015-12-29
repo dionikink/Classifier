@@ -73,7 +73,7 @@ public class Classifier {
 
         List<String> classes = v.getClasses();
         Map<String, Integer> docsInClass = DataUtils.countDocsInClass(file);
-        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass(v);
+        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
@@ -137,7 +137,7 @@ public class Classifier {
             for(String className : result.keySet()) {
                 if (resultClass == null) {
                     resultClass = className;
-                } else if (result.get(className) > result.get(resultClass)) {
+                } else if (result.get(className) < result.get(resultClass)) {
                     resultClass = className;
                 }
             }

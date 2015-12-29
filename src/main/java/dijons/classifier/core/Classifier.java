@@ -35,11 +35,12 @@ public class Classifier {
         Map<String, Integer> tokens = document.getBagOfWords();
 
         Map<String, Double> result = new HashMap<String, Double>();
+        double uniqueWordCount = Vocabulary.getInstance().getUniqueWordCount();
+        Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
+
 
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
-            double uniqueWordCount = Vocabulary.getInstance().getUniqueWordCount();
-            Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
             double classSize = wordsInClass.get(classEntry);
             double scoreForUnknownToken = 1/(classSize + uniqueWordCount);
 

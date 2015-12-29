@@ -71,6 +71,7 @@ public class DataUtils {
     }
 
     public static void fillBagOfWords(BufferedReader bufferedReader, String className) throws IOException {
+        List<String> stopwords = Vocabulary.getInstance().getStopwords();
         String string = "";
         String s;
         while((s = bufferedReader.readLine()) != null) {
@@ -81,10 +82,12 @@ public class DataUtils {
         String[] wordArray = string.split("\\s");
         countTotalWords(wordArray, className);
         for (int i = 0; i < wordArray.length; i++) {
-            if (bagOfWords.containsKey(wordArray[i])) {
-                bagOfWords.replace(wordArray[i], bagOfWords.get(wordArray[i]) + 1);
-            } else {
-                bagOfWords.put(wordArray[i], 1);
+            if (!stopwords.contains(wordArray[i])) {
+                if (bagOfWords.containsKey(wordArray[i])) {
+                    bagOfWords.replace(wordArray[i], bagOfWords.get(wordArray[i]) + 1);
+                } else {
+                    bagOfWords.put(wordArray[i], 1);
+                }
             }
         }
     }

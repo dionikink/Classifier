@@ -13,18 +13,25 @@ public class Vocabulary {
 
     private static final Vocabulary instance = new Vocabulary();
 
+    private List<String> stopwords = new ArrayList<String>();
+
     private Map<String, Map<String, Integer>> vocabulary;
 
     public List<String> getClasses() {
         List<String> classes = new ArrayList<String>();
 
-        for(Map.Entry<String, Map<String, Integer>> entry : vocabulary.entrySet()) {
+        for (Map.Entry<String, Map<String, Integer>> entry : vocabulary.entrySet()) {
             if (!classes.contains(entry.getKey())) {
                 classes.add(entry.getKey());
             }
         }
 
         return classes;
+    }
+
+
+    public List<String> getStopwords() {
+        return stopwords;
     }
 
     public double getUniqueWordCount() {
@@ -54,6 +61,12 @@ public class Vocabulary {
             System.err.println("Cannot extract vocabulary from file.");
             System.exit(1);
         }
+    }
+
+    private List<String> fillList() {
+        List<String> result = new ArrayList<String>();
+
+        return result;
     }
 
     public static Vocabulary getInstance() {

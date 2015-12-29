@@ -32,11 +32,9 @@ public class Classifier {
         Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
         List<String> classes = knowledgeBase.getClasses();
         Map<String, Integer> tokens = document.getBagOfWords();
-
         Map<String, Double> result = new HashMap<String, Double>();
         double uniqueWordCount = Vocabulary.getInstance().getUniqueWordCount();
         Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
-
 
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
@@ -94,6 +92,7 @@ public class Classifier {
         knowledgeBase.setPrior(prior);
         knowledgeBase.setCondProb(condProb);
         knowledgeBase.setClasses(classes);
+        Vocabulary.getInstance().countUniqueWords();
     }
 
     public void test(File file, File output) {

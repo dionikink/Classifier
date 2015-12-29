@@ -19,6 +19,8 @@ public class Vocabulary {
 
     private Map<String, Map<String, Integer>> vocabulary;
 
+    private double uniqueWordCount;
+
     public List<String> getClasses() {
         List<String> classes = new ArrayList<String>();
 
@@ -37,6 +39,10 @@ public class Vocabulary {
     }
 
     public double getUniqueWordCount() {
+        return uniqueWordCount;
+    }
+
+    public void countUniqueWords() {
         double result = 0;
         List<String> countedWords = new ArrayList<String>();
 
@@ -48,8 +54,7 @@ public class Vocabulary {
                 }
             }
         }
-
-        return result;
+        uniqueWordCount = result;
     }
 
     public Map<String, Map<String, Integer>> getVocabulary() {

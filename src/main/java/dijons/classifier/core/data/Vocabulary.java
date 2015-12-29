@@ -11,18 +11,9 @@ import java.util.zip.ZipFile;
  */
 public class Vocabulary {
 
-    private static final Vocabulary instance;
+    private static final Vocabulary instance = new Vocabulary();
 
     private Map<String, Map<String, Integer>> vocabulary;
-
-    public Vocabulary(File file) {
-        try {
-            this.vocabulary = DataUtils.extractVocabulary(file);
-        } catch (IOException e) {
-            System.err.println("Cannot extract vocabulary from file.");
-            System.exit(1);
-        }
-    }
 
     public List<String> getClasses() {
         List<String> classes = new ArrayList<String>();
@@ -54,5 +45,18 @@ public class Vocabulary {
 
     public Map<String, Map<String, Integer>> getVocabulary() {
         return this.vocabulary;
+    }
+
+    public void addFile(File file) {
+        try {
+            this.vocabulary = DataUtils.extractVocabulary(file);
+        } catch (IOException e) {
+            System.err.println("Cannot extract vocabulary from file.");
+            System.exit(1);
+        }
+    }
+
+    public static Vocabulary getInstance() {
+        return instance;
     }
 }

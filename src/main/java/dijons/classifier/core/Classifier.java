@@ -69,7 +69,8 @@ public class Classifier {
     }
 
     public void train(File file) {
-        Vocabulary v = new Vocabulary(file);
+        Vocabulary v = new Vocabulary();
+        v.addFile(file);
         Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
 
         int numberOfDocuments = KnowledgeBase.numberOfDocuments;

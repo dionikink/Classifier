@@ -44,6 +44,11 @@ public class Classifier {
                 if (condProb.get(classEntry).containsKey(token)) {
                     System.out.println("For " + token + " add " + Math.pow(condProb.get(classEntry).get(token), tokens.get(token)));
                     score = score *  Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
+                } else {
+                    Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
+                    double classSize = wordsInClass.get(classEntry);
+                    double newScoreForToken = 1/();
+                    condProb.get(classEntry).put(token, )
                 }
             }
 

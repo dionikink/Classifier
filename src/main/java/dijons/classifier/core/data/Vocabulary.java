@@ -11,6 +11,8 @@ import java.util.zip.ZipFile;
  */
 public class Vocabulary {
 
+    private static final Vocabulary instance;
+
     private Map<String, Map<String, Integer>> vocabulary;
 
     public Vocabulary(File file) {

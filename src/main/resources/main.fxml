@@ -6,8 +6,8 @@
 <Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="213.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dijons.classifier.gui.controllers.MainController">
    <children>
       <Button fx:id="btnTrain" layoutX="14.0" layoutY="38.0" mnemonicParsing="false" text="Train" onAction="#btnTrainClicked"/>
-      <Button fx:id="btnClassify" disable="true" layoutX="75.0" layoutY="38.0" mnemonicParsing="false" text="Classify" onAction="#btnClassifyClicked"/>
-      <Button fx:id="btnTest" disable="true" layoutX="153.0" layoutY="38.0" mnemonicParsing="false" text="Test" onAction="#btnTestClicked"/>
+      <Button fx:id="btnClassify" layoutX="75.0" layoutY="38.0" mnemonicParsing="false" text="Classify" onAction="#btnClassifyClicked"/>
+      <Button fx:id="btnTest" layoutX="153.0" layoutY="38.0" mnemonicParsing="false" text="Test" onAction="#btnTestClicked"/>
       <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select your action" />
    </children>
 </Pane>

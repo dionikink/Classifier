@@ -42,13 +42,13 @@ public class Classifier {
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
-                    score = score *  Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
+                    score +=  Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 } else {
                     Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
                     double classSize = wordsInClass.get(classEntry);
                     double newScoreForToken = 1/(classSize + Vocabulary.getInstance().getUniqueWordCount());
                     condProb.get(classEntry).put(token, newScoreForToken);
-                    score = score * Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
+                    score += Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
             result.put(classEntry, score);
@@ -80,14 +80,14 @@ public class Classifier {
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
-            prior.put(classEntry, ((double)docsInThisClass/(double)numberOfDocuments));
+            prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
 
             for(String word : vocabulary.get(classEntry).keySet()) {
                 double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
                 double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
 
-                condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);
+                condProbInClass.put(word, log2(wordOccurrencesInClass/wordsInThisClass));
             }
 
             condProb.put(classEntry, condProbInClass);
@@ -155,4 +155,7 @@ public class Classifier {
         return instance;
     }
 
+    public double log2(double x) {
+        return Math.log(x)/Math.log(2.0d);
+    }
 }

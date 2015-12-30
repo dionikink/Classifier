@@ -1,5 +1,6 @@
 package dijons.classifier.gui.controllers;
 
+import dijons.classifier.core.Classifier;
 import dijons.classifier.core.data.DataUtils;
 import dijons.classifier.core.data.Document;
 import dijons.classifier.core.data.Vocabulary;
@@ -48,7 +49,7 @@ public class InteractiveController {
 
     public void btnOKClicked() {
         Document document = DataUtils.extractDocument(file);
-
+        Classifier.getInstance().trainSingleDocument(document, result);
     }
 
     public void btnCancelClicked() {

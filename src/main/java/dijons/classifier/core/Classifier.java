@@ -94,19 +94,50 @@ public class Classifier {
         knowledgeBase.setPrior(prior);
         knowledgeBase.setCondProb(condProb);
         knowledgeBase.setClasses(classes);
+        knowledgeBase.setTotalDocsInClasses(docsInClass);
+        knowledgeBase.setTotalWordsInClasses(wordsInClass);
         Vocabulary.getInstance().countUniqueWords();
     }
 
     public void trainSingleDocument(Document document, String className) {
         Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
         if (condProb.containsKey(className)) {
-            condProb.get(className);
+            // Load known values of the Knowledge Base
+            Vocabulary v = Vocabulary.getInstance();
+            Map<String, Map<String, Integer>> vocabulary = v.getMap();
+            Map<String, Double> prior = knowledgeBase.getPrior();
+            Map<String, Double> condProbInClass = condProb.get(className);
+            Map<String, Integer> docsInClass = knowledgeBase.getTotalDocsInClasses();
+            Map<String, Integer> wordsInClass = knowledgeBase.getTotalWordsInClasses();
+
+            int numberOfDocuments = KnowledgeBase.numberOfDocuments + 1;
+            int docsInThisClass = docsInClass.get(className) + 1;
+            prior.replace(className, log2((double)docsInThisClass/(double)numberOfDocuments));
+            double wordsInThisClass = (double) wordsInClass.get(className) + v.getUniqueWordCount();
+            Map<String, Integer> bagOfWords = document.getBagOfWords();
+
+            for (String word : bagOfWords.keySet()) {
+                if (vocabulary.get(className).containsKey(word)) {
+                    double wordOccurrencesInClass = (double) vocabulary.get(className).get(word) + bagOfWords.get(word);
+                    condProbInClass.replace(word, log2(wordOccurrencesInClass/wordsInThisClass));
+                    vocabulary.get(className).replace(word, vocabulary.get(className).get(word) + bagOfWords.get(word));
+                } else {
+                    vocabulary.get(className).put(word, bagOfWords.get(word));
+                    condProbInClass.put(word, log2(1d/wordsInThisClass));
+                }
+            }
+            //  Replace old stored values
+            condProb.replace(className, condProbInClass);
+            docsInClass.replace(className, docsInClass.get(className) + 1);
+            KnowledgeBase.numberOfDocuments = numberOfDocuments;
+            knowledgeBase.setPrior(prior);
+            knowledgeBase.setCondProb(condProb);
+            knowledgeBase.setTotalDocsInClasses(docsInClass);
+            knowledgeBase.setTotalWordsInClasses(wordsInClass);
+            Vocabulary.getInstance().countUniqueWords();
         } else {
             System.err.println("Conditional Probability table does not contain class " + className);
         }
-
-        //TODO: probability van dit document|className toevoegen aan knowledge base.
-
     }
 
     public void test(File file, File output) {

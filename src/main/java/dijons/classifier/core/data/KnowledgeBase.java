@@ -16,6 +16,16 @@ public class KnowledgeBase {
     private Map<String, Double> prior;
     private Map<String, Map<String, Double>> condProb;
     private List<String> classes;
+    private Map<String, Integer> totalDocsInClasses;
+    private Map<String, Integer> totalWordsInClasses;
+
+    public Map<String, Integer> getTotalWordsInClasses() {return totalWordsInClasses; }
+
+    public void setTotalWordsInClasses(Map<String, Integer> totalWordsInClasses) {this.totalWordsInClasses = totalWordsInClasses; }
+
+    public Map<String, Integer> getTotalDocsInClasses() {return totalDocsInClasses; }
+
+    public void setTotalDocsInClasses(Map<String, Integer> totalDocsInClasses) {this.totalDocsInClasses = totalDocsInClasses; }
 
     public Map<String, Double> getPrior() {
         return prior;

@@ -1,4 +1,4 @@
-package dijons.classifier.gui;
+package dijons.classifier.gui.stages;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +11,7 @@ public class MainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/gui/main.fxml"));
-        primaryStage.setTitle("Classifier");
-        primaryStage.setScene(new Scene(root, 292, 76));
+        primaryStage.setScene(new Scene(root, 217, 76));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

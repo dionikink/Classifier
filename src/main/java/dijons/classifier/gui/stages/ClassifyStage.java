@@ -1,4 +1,4 @@
-package dijons.classifier.gui;
+package dijons.classifier.gui.stages;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

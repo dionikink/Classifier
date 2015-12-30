@@ -1,4 +1,4 @@
-package dijons.classifier.gui;
+package dijons.classifier.gui.stages;
 
 import dijons.classifier.gui.controllers.InteractiveController;
 import javafx.fxml.FXML;

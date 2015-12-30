@@ -2,10 +2,9 @@ package dijons.classifier.gui.controllers;
 
 import dijons.classifier.core.Classifier;
 import dijons.classifier.core.data.DataUtils;
-import dijons.classifier.gui.InteractiveStage;
+import dijons.classifier.gui.stages.InteractiveStage;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;

@@ -1,4 +1,4 @@
-package dijons.classifier.gui;
+package dijons.classifier.gui.stages;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,21 +8,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class TrainStage {
+public class TestStage {
 
     @FXML
     Parent main;
 
     public void start() {
         try {
-            main = FXMLLoader.load(getClass().getResource("/gui/train.fxml"));
+            main = FXMLLoader.load(getClass().getResource("/gui/test.fxml"));
         } catch (IOException e) {
-            System.err.println("Error loading train.fxml");
+            System.err.println("Error loading test.fxml");
         }
 
         Stage stage = new Stage();
-        stage.setTitle("Train classifier");
-        stage.setScene(new Scene(main, 428, 111));
+        stage.setTitle("Test classifier");
+        stage.setScene(new Scene(main, 428, 167));
         stage.setResizable(false);
         stage.show();
     }

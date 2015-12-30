@@ -50,6 +50,15 @@ public class InteractiveController {
     public void btnOKClicked() {
         Document document = DataUtils.extractDocument(file);
         Classifier.getInstance().trainSingleDocument(document, result);
+
+        btnCancelClicked();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("You are amazing");
+        alert.setHeaderText("Thank you for your feedback!");
+        alert.setContentText("The classifier will use this information to improve its classifications.");
+
+        alert.showAndWait();
     }
 
     public void btnCancelClicked() {

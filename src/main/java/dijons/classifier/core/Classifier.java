@@ -102,7 +102,7 @@ public class Classifier {
     public void trainSingleDocument(Document document, String className) {
         Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
         if (condProb.containsKey(className)) {
-            // Load known values of the Knowledge Base
+            // Load known values from the Knowledge Base
             Vocabulary v = Vocabulary.getInstance();
             Map<String, Map<String, Integer>> vocabulary = v.getMap();
             Map<String, Double> prior = knowledgeBase.getPrior();
@@ -123,7 +123,7 @@ public class Classifier {
                     vocabulary.get(className).replace(word, vocabulary.get(className).get(word) + bagOfWords.get(word));
                 } else {
                     vocabulary.get(className).put(word, bagOfWords.get(word));
-                    condProbInClass.put(word, log2(1d/wordsInThisClass));
+                    condProbInClass.put(word, log2(1.0d/wordsInThisClass));
                 }
             }
             //  Replace old stored values

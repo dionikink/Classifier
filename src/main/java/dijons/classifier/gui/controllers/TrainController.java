@@ -41,8 +41,8 @@ public class TrainController {
     public void btnTrainClicked() {
         Classifier c = Classifier.getInstance();
         c.train(selectedFile);
-        Stage stage = (Stage) train.getScene().getWindow();
-        stage.close();
+        MainController.setTrained(true);
+        btnCancelClicked();
     }
 
     public void btnCancelClicked() {

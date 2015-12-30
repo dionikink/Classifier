@@ -2,6 +2,7 @@ package dijons.classifier.gui.controllers;
 
 import dijons.classifier.core.Classifier;
 import dijons.classifier.core.data.DataUtils;
+import dijons.classifier.gui.InteractiveStage;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.chart.PieChart;
@@ -28,7 +29,8 @@ public class ClassifyController {
         Classifier c = Classifier.getInstance();
         String result = c.apply(DataUtils.extractDocument(selectedFile));
 
-        System.out.println("Result: " + result);
+        InteractiveStage interactiveStage = new InteractiveStage();
+        interactiveStage.start(result, selectedFile);
 
         Stage stage = (Stage) classify.getScene().getWindow();
         stage.close();

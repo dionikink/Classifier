@@ -15,7 +15,7 @@ public class ClassifyStage {
 
     public void start() {
         try {
-            main = FXMLLoader.load(getClass().getResource("/classify.fxml"));
+            main = FXMLLoader.load(getClass().getResource("/gui/classify.fxml"));
         } catch (IOException e) {
             System.err.println("Error loading classify.fxml");
         }

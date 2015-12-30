@@ -11,8 +11,6 @@ import java.util.zip.ZipFile;
  */
 public class DataUtils {
 
-    private static Map<String, Integer> bagOfWords;
-
     public static Map<String, Map<String, Integer>> extractVocabulary(File file) throws IOException{
         KnowledgeBase.data = new DataSet();
         Map<String, Map<String,Integer>> result = new HashMap<String, Map<String, Integer>>();
@@ -21,6 +19,7 @@ public class DataUtils {
         count(entries);
         entries = zipFile.entries();
         String categoryName = null;
+        Map<String, Integer> bagOfWords = new HashMap<String, Integer>();
 
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
@@ -32,7 +31,7 @@ public class DataUtils {
                 categoryName = entry.getName().replaceAll("[^a-z A-Z]", "");
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-                fillBagOfWords(bufferedReader, categoryName);
+                fillBagOfWords(bufferedReader, categoryName, bagOfWords);
                 bufferedReader.close();
             }
         }
@@ -40,6 +39,49 @@ public class DataUtils {
             result.put(categoryName, bagOfWords);
         }
 
+        return result;
+    }
+
+
+    public static ArrayList<Document> extractDocuments(File file) throws IOException {
+        ArrayList<Document> result = new ArrayList<Document>();
+        ZipFile zipFile = new ZipFile(file);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while(entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
+            String string = "";
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                string = string + s;
+            }
+            if (!string.equals("")) {
+                Document document = DataUtils.tokenizer(string);
+                document.setName(entry.getName());
+                result.add(document);
+            }
+        }
+        return result;
+    }
+
+    public static Document extractDocument(File file) {
+        Document result = null;
+        String data = "";
+        String newLine;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            while((newLine = br.readLine()) != null) {
+                data += newLine;
+            }
+
+            result = DataUtils.tokenizer(data);
+
+        } catch (IOException e) {
+            System.err.println("Cannot open file " + file.getName());
+        }
+
+        result.setName(file.getName());
         return result;
     }
 
@@ -70,7 +112,7 @@ public class DataUtils {
         KnowledgeBase.data.setTotalWordCount(totalWordCount);
     }
 
-    public static void fillBagOfWords(BufferedReader bufferedReader, String className) throws IOException {
+    public static void fillBagOfWords(BufferedReader bufferedReader, String className, Map<String, Integer> bagOfWords) throws IOException {
         List<String> stopwords = Vocabulary.getInstance().getStopwords();
         String string = "";
         String s;
@@ -94,17 +136,14 @@ public class DataUtils {
 
     public static void count(Enumeration<? extends ZipEntry> entries) {
         int totalNoOfDocs = 0;
-        int totalNoOfCategories = 0;
 
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
-            if (entry.isDirectory()) {
-                totalNoOfCategories++;
-            } else {
+            if (!entry.isDirectory()) {
                 totalNoOfDocs++;
             }
         }
-        KnowledgeBase.numberOfCategories = totalNoOfCategories;
+
         KnowledgeBase.numberOfDocuments = totalNoOfDocs;
     }
 
@@ -114,6 +153,7 @@ public class DataUtils {
         String string = data.toLowerCase();
         string = string.replaceAll("[^a-z \\s]", "");
         StringTokenizer stringTokenizer = new StringTokenizer(string);
+
         while (stringTokenizer.hasMoreElements()) {
             string = stringTokenizer.nextToken();
             if (!stopwords.contains(string)) {
@@ -124,10 +164,11 @@ public class DataUtils {
                 }
             }
         }
+
         return new Document(bagOfWords);
     }
 
-    public static Map<String, Integer> countDocsInClass(File file) {
+    public static Map<String, Integer> countDocumentsInClass(File file) {
         ZipFile zipFile = null;
         Map<String, Integer> docsInClass = new HashMap<String, Integer>();
 
@@ -173,47 +214,7 @@ public class DataUtils {
             }
             wordsInClass.put(classEntry, size);
         }
+
         return wordsInClass;
-    }
-
-    public static ArrayList<Document> extractDocuments(File file) throws IOException {
-        ArrayList<Document> result = new ArrayList<Document>();
-        ZipFile zipFile = new ZipFile(file);
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        while(entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-            String string = "";
-            String s;
-            while ((s = bufferedReader.readLine()) != null) {
-                string = string + s;
-            }
-            if (!string.equals("")) {
-                Document document = DataUtils.tokenizer(string);
-                document.setName(entry.getName());
-                result.add(document);
-            }
-        }
-        return result;
-    }
-
-    public static Document extractDocument(File file) {
-        Document result = null;
-        String data = "";
-        String newLine;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-
-            while((newLine = br.readLine()) != null) {
-                data += newLine;
-            }
-
-            result = DataUtils.tokenizer(data);
-
-        } catch (IOException e) {
-            System.err.println("Cannot open file " + file.getName());
-        }
-
-        return result;
     }
 }

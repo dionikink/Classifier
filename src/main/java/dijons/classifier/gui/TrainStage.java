@@ -1,6 +1,5 @@
 package dijons.classifier.gui;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +15,7 @@ public class TrainStage {
 
     public void start() {
         try {
-            main = FXMLLoader.load(getClass().getResource("/train.fxml"));
+            main = FXMLLoader.load(getClass().getResource("/gui/train.fxml"));
         } catch (IOException e) {
             System.err.println("Error loading train.fxml");
         }

@@ -13,7 +13,7 @@ public class Document {
     private String category;
     private String name;
 
-    public Document() {
+    public Document(String name) {
         this.bagOfWords = new HashMap<String, Integer>();
     }
 

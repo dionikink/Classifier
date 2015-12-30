@@ -49,6 +49,7 @@ public class Classifier {
                     score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
+            System.out.println("Score for " + document.getName() + "|" + classEntry + ": " + score);
             result.put(classEntry, score);
         }
 
@@ -66,14 +67,14 @@ public class Classifier {
     public void train(File file) {
         Vocabulary v = Vocabulary.getInstance();
         v.addFile(file);
-        Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
+        Map<String, Map<String, Integer>> vocabulary = v.getMap();
 
         int numberOfDocuments = KnowledgeBase.numberOfDocuments;
         Map<String, Double> prior = new HashMap<String, Double>();
         Map<String, Map<String, Double>> condProb = new HashMap<String, Map<String, Double>>();
 
         List<String> classes = v.getClasses();
-        Map<String, Integer> docsInClass = DataUtils.countDocsInClass(file);
+        Map<String, Integer> docsInClass = DataUtils.countDocumentsInClass(file);
         Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
 
         for(String classEntry : classes) {
@@ -81,6 +82,7 @@ public class Classifier {
             prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
             double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
+
             for(String word : vocabulary.get(classEntry).keySet()) {
                 double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
                 condProbInClass.put(word, log2(wordOccurrencesInClass/wordsInThisClass));
@@ -93,6 +95,18 @@ public class Classifier {
         knowledgeBase.setCondProb(condProb);
         knowledgeBase.setClasses(classes);
         Vocabulary.getInstance().countUniqueWords();
+    }
+
+    public void trainSingleDocument(Document document, String className) {
+        Map<String, Map<String, Double>> condProb = knowledgeBase.getCondProb();
+        if (condProb.containsKey(className)) {
+            condProb.get(className);
+        } else {
+            System.err.println("Conditional Probability table does not contain class " + className);
+        }
+
+        //TODO: probability van dit document|className toevoegen aan knowledge base.
+
     }
 
     public void test(File file, File output) {

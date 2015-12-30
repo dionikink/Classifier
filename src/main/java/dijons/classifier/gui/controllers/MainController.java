@@ -13,11 +13,6 @@ import javafx.scene.control.Button;
  */
 public class MainController {
 
-    @FXML
-    Parent main;
-    public Button btnClassify;
-    public Button btnTest;
-
     public void btnTrainClicked() {
         TrainStage trainStage = new TrainStage();
         trainStage.start();

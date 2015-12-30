@@ -14,11 +14,8 @@ import java.util.zip.ZipFile;
 public class Vocabulary {
 
     private static final Vocabulary instance = new Vocabulary();
-
     private List<String> stopwords = fillList();
-
     private Map<String, Map<String, Integer>> vocabulary;
-
     private double uniqueWordCount;
 
     public List<String> getClasses() {
@@ -31,15 +28,6 @@ public class Vocabulary {
         }
 
         return classes;
-    }
-
-
-    public List<String> getStopwords() {
-        return stopwords;
-    }
-
-    public double getUniqueWordCount() {
-        return uniqueWordCount;
     }
 
     public void countUniqueWords() {
@@ -57,13 +45,13 @@ public class Vocabulary {
         uniqueWordCount = result;
     }
 
-    public Map<String, Map<String, Integer>> getVocabulary() {
-        return this.vocabulary;
-    }
-
     public void addFile(File file) {
         try {
-            this.vocabulary = DataUtils.extractVocabulary(file);
+            if (this.vocabulary == null) {
+                this.vocabulary = new HashMap<String, Map<String, Integer>>();
+            }
+
+            this.vocabulary.putAll(DataUtils.extractVocabulary(file));
         } catch (IOException e) {
             System.err.println("Cannot extract vocabulary from file.");
             System.exit(1);
@@ -91,6 +79,18 @@ public class Vocabulary {
         }
 
         return result;
+    }
+
+    public List<String> getStopwords() {
+        return stopwords;
+    }
+
+    public double getUniqueWordCount() {
+        return uniqueWordCount;
+    }
+
+    public Map<String, Map<String, Integer>> getMap() {
+        return this.vocabulary;
     }
 
     public static Vocabulary getInstance() {

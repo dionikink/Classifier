@@ -1,6 +1,5 @@
 package dijons.classifier.core.data;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,6 @@ import java.util.Map;
 public class KnowledgeBase {
 
     public static int numberOfDocuments = 0;
-    public static int numberOfCategories = 0;
 
     public static DataSet data;
 

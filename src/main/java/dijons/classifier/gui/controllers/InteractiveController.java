@@ -49,6 +49,7 @@ public class InteractiveController {
 
     public void btnOKClicked() {
         Document document = DataUtils.extractDocument(file);
+        String result = bxCorrectClass.getValue();
         Classifier.getInstance().trainSingleDocument(document, result);
 
         btnCancelClicked();

@@ -4,6 +4,7 @@ import dijons.classifier.core.data.DataUtils;
 import dijons.classifier.core.data.Document;
 import dijons.classifier.core.data.KnowledgeBase;
 import dijons.classifier.core.data.Vocabulary;
+import javafx.scene.chart.PieChart;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,22 +110,16 @@ public class Classifier {
             Map<String, Double> condProbInClass = condProb.get(className);
             Map<String, Integer> docsInClass = knowledgeBase.getTotalDocsInClasses();
             Map<String, Integer> wordsInClass = knowledgeBase.getTotalWordsInClasses();
-
+            v.addDocument(document, className);
+            Vocabulary.getInstance().countUniqueWords();
             int numberOfDocuments = KnowledgeBase.numberOfDocuments + 1;
             int docsInThisClass = docsInClass.get(className) + 1;
             prior.replace(className, log2((double)docsInThisClass/(double)numberOfDocuments));
-            double wordsInThisClass = (double) wordsInClass.get(className) + v.getUniqueWordCount();
             Map<String, Integer> bagOfWords = document.getBagOfWords();
-
+            double wordsInThisClass = (double) wordsInClass.get(className) + v.getUniqueWordCount();
             for (String word : bagOfWords.keySet()) {
-                if (vocabulary.get(className).containsKey(word)) {
-                    double wordOccurrencesInClass = (double) vocabulary.get(className).get(word) + bagOfWords.get(word);
-                    condProbInClass.replace(word, log2(wordOccurrencesInClass/wordsInThisClass));
-                    vocabulary.get(className).replace(word, vocabulary.get(className).get(word) + bagOfWords.get(word));
-                } else {
-                    vocabulary.get(className).put(word, bagOfWords.get(word));
-                    condProbInClass.put(word, log2(1.0d/wordsInThisClass));
-                }
+                double wordOccurrencesInClass = (double) vocabulary.get(className).get(word);
+                condProbInClass.replace(word, log2(wordOccurrencesInClass/wordsInThisClass));
             }
             //  Replace old stored values
             condProb.replace(className, condProbInClass);
@@ -134,7 +129,6 @@ public class Classifier {
             knowledgeBase.setCondProb(condProb);
             knowledgeBase.setTotalDocsInClasses(docsInClass);
             knowledgeBase.setTotalWordsInClasses(wordsInClass);
-            Vocabulary.getInstance().countUniqueWords();
         } else {
             System.err.println("Conditional Probability table does not contain class " + className);
         }

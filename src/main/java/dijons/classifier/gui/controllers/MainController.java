@@ -52,8 +52,8 @@ public class MainController {
             alert.setContentText("In order to test the classifier, it has to be trained first. Use the 'Train' option to do so.");
             alert.showAndWait();
         } else {
-            ClassifyStage classifyStage = new ClassifyStage();
-            classifyStage.start();
+            TestStage testStage = new TestStage();
+            testStage.start();
         }
     }
 

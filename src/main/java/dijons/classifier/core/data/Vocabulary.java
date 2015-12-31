@@ -1,5 +1,6 @@
 package dijons.classifier.core.data;
 
+import javax.print.Doc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -43,6 +44,16 @@ public class Vocabulary {
             }
         }
         uniqueWordCount = result;
+    }
+
+    public void addDocument(Document document, String className) {
+        for (String word : document.getBagOfWords().keySet()) {
+            if (vocabulary.get(className).containsKey(word)) {
+                vocabulary.get(className).replace(word, vocabulary.get(className).get(word) + document.getBagOfWords().get(word));
+            } else {
+                vocabulary.get(className).put(word, document.getBagOfWords().get(word));
+            }
+        }
     }
 
     public void addFile(File file) {

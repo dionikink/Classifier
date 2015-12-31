@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<Pane fx:id="classifySelect" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="198.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dijons.classifier.gui.controllers.ClassifySelectController">
+   <children>
+      <Button fx:id="btnSingle" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnSingleClicked" text="Single" />
+      <Button fx:id="btnMultiple" layoutX="109.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnMultipleClicked" text="Multiple" />
+      <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Classify one or more files:" />
+   </children>
+</Pane>

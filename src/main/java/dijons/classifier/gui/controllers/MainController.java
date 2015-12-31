@@ -1,6 +1,7 @@
 package dijons.classifier.gui.controllers;
 
-import dijons.classifier.gui.stages.ClassifyStage;
+import dijons.classifier.gui.stages.ClassifySelectStage;
+import dijons.classifier.gui.stages.ClassifySingleStage;
 import dijons.classifier.gui.stages.TestStage;
 import dijons.classifier.gui.stages.TrainStage;
 import javafx.fxml.FXML;
@@ -39,8 +40,8 @@ public class MainController {
             alert.setContentText("In order to classify a new file, the classifier has to be trained first. Use the 'Train' option to do so.");
             alert.showAndWait();
         } else {
-            ClassifyStage classifyStage = new ClassifyStage();
-            classifyStage.start();
+            ClassifySelectStage classifySelectStage = new ClassifySelectStage();
+            classifySelectStage.start();
         }
     }
 

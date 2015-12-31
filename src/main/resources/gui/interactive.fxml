@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
-<Pane fx:id="interactive" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="139.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+
+<Pane fx:id="interactive" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="139.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your input file was classified as" />
+      <Text fx:id="txtInput" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="341.33056640625" />
       <Button fx:id="btnOK" disable="true" layoutX="310.0" layoutY="98.0" mnemonicParsing="false" onAction="#btnOKClicked" text="OK" />
       <Button fx:id="btnCancel" layoutX="236.0" layoutY="98.0" mnemonicParsing="false" onAction="#btnCancelClicked" text="Cancel" />
-      <Label fx:id="lblResult" layoutX="219.0" layoutY="10.0" prefHeight="21.0" prefWidth="193.0" />
-      <ChoiceBox fx:id="bxCorrectClass" layoutX="10.0" layoutY="57.0" prefHeight="31.0" prefWidth="341.0" onAction="#bxCorrectClassChanged"/>
+      <ChoiceBox fx:id="bxCorrectClass" layoutX="10.0" layoutY="57.0" onAction="#bxCorrectClassChanged" prefHeight="31.0" prefWidth="341.0" />
       <Text layoutX="10.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the correct class from the menu below" />
    </children>
 </Pane>

@@ -8,21 +8,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ClassifyStage {
+public class ClassifySelectStage {
 
     @FXML
     Parent main;
 
     public void start() {
         try {
-            main = FXMLLoader.load(getClass().getResource("/gui/classify.fxml"));
+            main = FXMLLoader.load(getClass().getResource("/gui/classifySelect.fxml"));
         } catch (IOException e) {
-            System.err.println("Error loading classify.fxml");
+            System.err.println("Error loading classifySelect.fxml");
         }
 
         Stage stage = new Stage();
-        stage.setTitle("Classify data");
-        stage.setScene(new Scene(main, 428, 111));
+        stage.setTitle("Select method");
+        stage.setScene(new Scene(main, 198, 76));
         stage.setResizable(false);
         stage.show();
     }

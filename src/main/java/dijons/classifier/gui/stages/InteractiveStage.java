@@ -1,5 +1,6 @@
 package dijons.classifier.gui.stages;
 
+import dijons.classifier.core.data.Document;
 import dijons.classifier.gui.controllers.InteractiveController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +16,21 @@ public class InteractiveStage {
     @FXML
     Parent main;
 
-    public void start(String result, File file) {
+    private boolean multiple = false;
+
+    public InteractiveStage(boolean multiple) {
+        if (multiple) {
+            this.multiple = true;
+        }
+    }
+
+    public InteractiveStage() {
+        this.multiple = false;
+    }
+
+    public void start(String result, Document document) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/interactive.fxml"));
-        InteractiveController interactiveController = new InteractiveController(result, file);
+        InteractiveController interactiveController = new InteractiveController(result, document, multiple);
         loader.setController(interactiveController);
 
         try {

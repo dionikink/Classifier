@@ -4,9 +4,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
-<Pane fx:id="classify" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="111.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dijons.classifier.gui.controllers.ClassifyController">
+<Pane fx:id="classifyMultiple" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="111.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dijons.classifier.gui.controllers.ClassifyMultipleController">
    <children>
-      <Text layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the source file (*.txt)" />
+      <Text layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the source file (*.zip)" />
       <TextField fx:id="txtSelected" editable="false" layoutX="10.0" layoutY="37.0" prefHeight="25.0" prefWidth="324.0" />
       <Button fx:id="btnBrowse" layoutX="344.0" layoutY="37.0" mnemonicParsing="false" onAction="#btnBrowseClicked" text="Browse" />
       <Button fx:id="btnClassify" disable="true" layoutX="343.0" layoutY="73.0" mnemonicParsing="false" onAction="#btnClassifyClicked" text="Classify" />

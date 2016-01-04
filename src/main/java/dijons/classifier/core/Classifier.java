@@ -115,9 +115,9 @@ public class Classifier {
             int numberOfDocuments = KnowledgeBase.numberOfDocuments + 1;
             int docsInThisClass = docsInClass.get(className) + 1;
             prior.replace(className, log2((double)docsInThisClass/(double)numberOfDocuments));
-            Map<String, Integer> bagOfWords = document.getBagOfWords();
             double wordsInThisClass = (double) wordsInClass.get(className) + v.getUniqueWordCount();
-            for (String word : bagOfWords.keySet()) {
+
+            for (String word : vocabulary.get(className).keySet()) {
                 double wordOccurrencesInClass = (double) vocabulary.get(className).get(word);
                 condProbInClass.replace(word, log2(wordOccurrencesInClass/wordsInThisClass));
             }

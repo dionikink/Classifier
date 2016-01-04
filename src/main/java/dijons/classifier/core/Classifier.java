@@ -79,21 +79,17 @@ public class Classifier {
         Map<String, Integer> docsInClass = DataUtils.countDocumentsInClass(file);
         Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
         v.countUniqueWords();
-        Map<String,Map<String,Double>> documentFrequencies = v.getDocumentFrequencies();
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
             prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
 //            prior.put(classEntry, (double)docsInThisClass/(double)numberOfDocuments);
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
-            Map<String, Double> documentFrequency = documentFrequencies.get(classEntry);
             double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
             for(String word : vocabulary.get(classEntry).keySet()) {
-//                if ((documentFrequency.get(word)/docsInThisClass) < 0.8 && (documentFrequency.get(word)/docsInThisClass) > 0.005) {
-                    double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
-                    condProbInClass.put(word, log2(wordOccurrencesInClass / wordsInThisClass));
+                double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
+                condProbInClass.put(word, log2(wordOccurrencesInClass / wordsInThisClass));
 //                condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);
-//                }
             }
             condProb.put(classEntry, condProbInClass);
         }

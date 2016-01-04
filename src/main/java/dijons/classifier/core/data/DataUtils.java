@@ -20,30 +20,24 @@ public class DataUtils {
         entries = zipFile.entries();
         String categoryName = null;
         Map<String, Integer> bagOfWords = new HashMap<String, Integer>();
-        Map<String, Map<String, Double>> documentFrequencies = new HashMap<String, Map<String, Double>>();
-        Map<String, Double> documentFrequency = new HashMap<String, Double>();
 
         while(entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             if (entry.isDirectory()) {
                 if (categoryName != null) {
                     result.put(categoryName, bagOfWords);
-                    documentFrequencies.put(categoryName, documentFrequency);
                 }
                 bagOfWords = new HashMap<String, Integer>();
-                documentFrequency = new HashMap<String, Double>();
                 categoryName = entry.getName().replaceAll("[^a-z A-Z]", "");
             } else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-                documentFrequency = fillBagOfWords(bufferedReader, categoryName, bagOfWords, documentFrequency);
+                fillBagOfWords(bufferedReader, categoryName, bagOfWords);
                 bufferedReader.close();
             }
         }
         if (categoryName != null) {
             result.put(categoryName, bagOfWords);
-            documentFrequencies.put(categoryName, documentFrequency);
         }
-        Vocabulary.getInstance().setDocumentFrequencies(documentFrequencies);
         return result;
     }
 
@@ -125,9 +119,8 @@ public class DataUtils {
         KnowledgeBase.data.setTotalWordCount(totalWordCount);
     }
 
-    public static Map<String, Double> fillBagOfWords(BufferedReader bufferedReader, String className, Map<String, Integer> bagOfWords, Map<String,Double> documentFrequency) throws IOException {
+    public static void fillBagOfWords(BufferedReader bufferedReader, String className, Map<String, Integer> bagOfWords) throws IOException {
         List<String> stopwords = Vocabulary.getInstance().getStopwords();
-        List<String> doneWords = new ArrayList<String>();
         String string = "";
         String s;
         while((s = bufferedReader.readLine()) != null) {
@@ -144,17 +137,8 @@ public class DataUtils {
                 } else {
                     bagOfWords.put(wordArray[i], 1);
                 }
-                if (!doneWords.contains(wordArray[i])) {
-                    if (documentFrequency.containsKey(wordArray[i])) {
-                        documentFrequency.replace(wordArray[i], documentFrequency.get(wordArray[i]) + 1);
-                    } else {
-                        documentFrequency.put(wordArray[i], 1d);
-                    }
-                    doneWords.add(wordArray[i]);
-                }
             }
         }
-        return documentFrequency;
     }
 
     public static void count(Enumeration<? extends ZipEntry> entries) {

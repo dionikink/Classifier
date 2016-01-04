@@ -4,7 +4,6 @@ import dijons.classifier.core.data.DataUtils;
 import dijons.classifier.core.data.Document;
 import dijons.classifier.core.data.KnowledgeBase;
 import dijons.classifier.core.data.Vocabulary;
-import javafx.scene.chart.PieChart;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class Classifier {
         for(String classEntry : classes) {
             double score = prior.get(classEntry);
             double classSize = wordsInClass.get(classEntry);
-            double scoreForUnknownToken = 1/(classSize + uniqueWordCount);
+            double scoreForUnknownToken = log2(1/(classSize + uniqueWordCount));
 
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
@@ -79,21 +78,23 @@ public class Classifier {
         List<String> classes = v.getClasses();
         Map<String, Integer> docsInClass = DataUtils.countDocumentsInClass(file);
         Map<String, Integer> wordsInClass = DataUtils.countWordsInClass();
-        Vocabulary.getInstance().countUniqueWords();
+        v.countUniqueWords();
+        Map<String,Map<String,Double>> documentFrequencies = v.getDocumentFrequencies();
 
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
             prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
 //            prior.put(classEntry, (double)docsInThisClass/(double)numberOfDocuments);
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
+            Map<String, Double> documentFrequency = documentFrequencies.get(classEntry);
             double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
-
             for(String word : vocabulary.get(classEntry).keySet()) {
-                double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
-                condProbInClass.put(word, log2(wordOccurrencesInClass/wordsInThisClass));
+//                if ((documentFrequency.get(word)/docsInThisClass) < 0.8 && (documentFrequency.get(word)/docsInThisClass) > 0.005) {
+                    double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
+                    condProbInClass.put(word, log2(wordOccurrencesInClass / wordsInThisClass));
 //                condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);
+//                }
             }
-
             condProb.put(classEntry, condProbInClass);
         }
 

@@ -15,6 +15,14 @@ import java.util.zip.ZipFile;
 public class Vocabulary {
 
     private static final Vocabulary instance = new Vocabulary();
+    private static final String[] stopWords = {"a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren\'t", "as", "at",
+            "b", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "c", "can\'t", "cannot", "could", "couldn\'t", "d", "did", "didn\'t", "do", "does", "doesn\'t", "doing", "don\'t", "down", "during", "e",
+            "each", "f", "few", "for", "from", "further", "g", "h", "had", "hadn\'t", "has", "hasn\'t", "have", "haven\'t", "having", "he", "he\'d", "he\'ll", "he\'s", "her", "here", "here\'s", "hers", "herself", "him", "himself", "his",
+            "how", "how\'s", "i", "i\'d", "i\'ll", "i\'m", "i\'ve", "if", "in", "into", "is", "isn\'t", "it", "it\'s", "its", "itself", "j", "l", "let\'s", "ll", "m", "me", "more", "most", "mustn\'t", "my", "myself", "n", "no", "nor",
+            "not", "o", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "p", "q", "r", "re", "s", "same", "shan\'t", "she", "she\'d", "she\'ll", "she\'s", "should", "shouldn\'t",
+            "so", "some", "such", "t", "than", "that", "that\'s", "the", "their", "theirs", "them", "themselves", "then", "there", "there\'s", "these", "they", "they\'d", "they\'ll", "they\'re", "they\'ve", "this", "those", "through",
+            "to", "too", "u", "under", "until", "up", "v", "ve", "very", "w", "was", "wasn\'t", "we", "we\'d", "we\'ll", "we\'re", "we\'ve", "were", "weren\'t", "what", "what\'s", "when", "when\'s", "where", "where\'s", "which",
+            "while", "who", "who\'s", "whom", "why", "why\'s", "with", "won\'t", "would", "wouldn\'t", "x", "y", "you", "you\'d", "you\'ll", "you\'re", "you\'ve", "your", "yours", "yourself", "yourselves", "z"};
     private List<String> stopwords = fillList();
     private Map<String, Map<String, Integer>> vocabulary;
     private double uniqueWordCount;
@@ -76,24 +84,7 @@ public class Vocabulary {
 
     private List<String> fillList() {
         List<String> result = new ArrayList<String>();
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file;
-
-        try {
-            file = new File(classLoader.getResource("stopwords.txt").getFile());
-
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            String nextLine;
-
-            while ((nextLine = bufferedReader.readLine()) != null) {
-                result.add(nextLine);
-            }
-        } catch (NullPointerException e) {
-            System.err.println("Could not open stopwords.txt");
-        } catch (IOException e) {
-            System.err.println("Could not read stopwords.txt");
-        }
-
+        result = Arrays.asList(stopWords);
         return result;
     }
 

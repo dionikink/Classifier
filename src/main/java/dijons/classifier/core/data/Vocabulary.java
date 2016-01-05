@@ -18,6 +18,11 @@ public class Vocabulary {
     private List<String> stopwords = fillList();
     private Map<String, Map<String, Integer>> vocabulary;
     private double uniqueWordCount;
+    private Map<String, Map<String, Double>> documentFrequencies;
+
+    public Map<String, Map<String, Double>> getDocumentFrequencies() {return documentFrequencies; }
+
+    public void setDocumentFrequencies(Map<String, Map<String, Double>> documentFrequencies) {this.documentFrequencies = documentFrequencies; }
 
     public List<String> getClasses() {
         List<String> classes = new ArrayList<String>();

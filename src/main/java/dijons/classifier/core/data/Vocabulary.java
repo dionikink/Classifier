@@ -75,26 +75,33 @@ public class Vocabulary {
     }
 
     private List<String> fillList() {
-        List<String> result = new ArrayList<String>();
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file;
-
-        try {
-            file = new File(classLoader.getResource("stopwords.txt").getFile());
-
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            String nextLine;
-
-            while ((nextLine = bufferedReader.readLine()) != null) {
-                result.add(nextLine);
-            }
-        } catch (NullPointerException e) {
-            System.err.println("Could not open stopwords.txt");
-        } catch (IOException e) {
-            System.err.println("Could not read stopwords.txt");
-        }
-
-        return result;
+//        List<String> result = new ArrayList<String>();
+//        ClassLoader classLoader = getClass().getClassLoader();
+//        File file;
+//
+//        try {
+//            file = new File(classLoader.getResource("stopwords.txt").getFile());
+//
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+//            String nextLine;
+//
+//            while ((nextLine = bufferedReader.readLine()) != null) {
+//                result.add(nextLine);
+//            }
+//        } catch (NullPointerException e) {
+//            System.err.println("Could not open stopwords.txt");
+//        } catch (IOException e) {
+//            System.err.println("Could not read stopwords.txt");
+//        }
+        String[] stopWords = {"a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "arent", "as", "at", "b", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "c", "cant", "cannot",
+                "could", "couldnt", "d", "did", "didnt", "do", "does", "doesnt", "doing", "dont", "down", "during", "e", "each", "f", "few", "for", "from", "further", "h", "had", "hadnt", "has", "hasnt", "have", "havent", "having",
+                "he", "hed", "hell", "hes", "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how", "hows", "i", "id", "ill", "im", "ive", "if", "in", "into", "is", "isnt", "it", "its", "its",
+                "itself", "j", "k", "l", "ll", "lets", "m", "me", "more", "most", "mustnt", "my", "myself", "n", "no", "nor", "not", "o", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out",
+                "over", "own", "p", "q", "r", "s", "same", "shant", "she", "shed", "shell", "shes", "should", "shouldnt", "so", "some", "such", "t", "than", "that", "thats", "the", "their", "theirs", "them", "themselves", "then",
+                "there", "theres", "these", "they", "theyd", "theyll", "theyre", "theyve", "this", "those", "through", "to", "too", "u", "under", "until", "up", "v", "ve", "very", "w", "was", "wasnt", "we", "wed", "well", "were",
+                "weve", "were", "werent", "what", "whats", "when", "whens", "where", "wheres", "which", "while", "who", "whos", "whom", "why", "whys", "with", "wont", "would", "wouldnt", "you", "youd", "youll", "youre", "youve",
+                "your", "yours", "yourself", "yourselves", "y", "z"};
+        return Arrays.asList(stopWords);
     }
 
     public List<String> getStopwords() {

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,6 +26,13 @@ public class ClassifyMultipleStage {
         stage.setScene(new Scene(main, 428, 111));
         stage.setResizable(false);
         stage.show();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Important!");
+        alert.setHeaderText("Do not classify more than 10 files at once!");
+        alert.setContentText("An unresolved bug in the program will create feedback windows for all classified files simultaneously. If you try to classify 200 files, it will open 200 windows.");
+
+        alert.showAndWait();
     }
 
 }

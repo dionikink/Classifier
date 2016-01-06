@@ -1,6 +1,5 @@
 package dijons.classifier.core.data;
 
-import java.util.List;
 import java.util.Map;
 
 /**

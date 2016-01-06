@@ -2,7 +2,6 @@ package dijons.classifier.core.data;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Pack200;
 
 /**
  * Created by Dion on 29-12-2015.

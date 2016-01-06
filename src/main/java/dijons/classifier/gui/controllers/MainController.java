@@ -1,12 +1,9 @@
 package dijons.classifier.gui.controllers;
 
 import dijons.classifier.gui.stages.ClassifySelectStage;
-import dijons.classifier.gui.stages.ClassifySingleStage;
 import dijons.classifier.gui.stages.TestStage;
 import dijons.classifier.gui.stages.TrainStage;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 
 /**
  * Created by jensj.r on 12/7/2015.

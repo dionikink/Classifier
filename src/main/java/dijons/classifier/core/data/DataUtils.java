@@ -47,15 +47,6 @@ public class DataUtils {
         return result;
     }
 
-    public static int getTotalWordCountOfDoc(Map<String, Integer> bagOfWords) {
-        int count = 0;
-        for (String word : bagOfWords.keySet()) {
-            count += bagOfWords.get(word);
-        }
-        return count;
-    }
-
-
     public static ArrayList<Document> extractDocuments(File file) throws IOException {
         ArrayList<Document> result = new ArrayList<Document>();
         ZipFile zipFile = new ZipFile(file);

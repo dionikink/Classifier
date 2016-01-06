@@ -88,6 +88,7 @@ public class Vocabulary {
 //        } catch (IOException e) {
 //            System.err.println("Could not read stopwords.txt");
 //        }
+
         String[] stopWords = {"a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "arent", "as", "at", "b", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "c", "cant", "cannot",
                 "could", "couldnt", "d", "did", "didnt", "do", "does", "doesnt", "doing", "dont", "down", "during", "e", "each", "f", "few", "for", "from", "further", "h", "had", "hadnt", "has", "hasnt", "have", "havent", "having",
                 "he", "hed", "hell", "hes", "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how", "hows", "i", "id", "ill", "im", "ive", "if", "in", "into", "is", "isnt", "it", "its", "its",

@@ -21,7 +21,6 @@ public class Classifier {
     private KnowledgeBase knowledgeBase;
     private final static Classifier instance = new Classifier();
 
-
     public Classifier() {
         this.knowledgeBase = new KnowledgeBase();
     }
@@ -44,11 +43,9 @@ public class Classifier {
             for(String token : tokens.keySet()) {
                 if (condProb.get(classEntry).containsKey(token)) {
                     score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
-//                    score = score * Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 } else {
                     condProb.get(classEntry).put(token, scoreForUnknownToken);
                     score += multiply(condProb.get(classEntry).get(token), tokens.get(token));
-//                    score = score * Math.pow(condProb.get(classEntry).get(token), tokens.get(token));
                 }
             }
             System.out.println("Score for " + document.getName() + "|" + classEntry + ": " + score);
@@ -84,7 +81,6 @@ public class Classifier {
         for(String classEntry : classes) {
             int docsInThisClass = docsInClass.get(classEntry);
             prior.put(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
-//            prior.put(classEntry, (double)docsInThisClass/(double)numberOfDocuments);
             Map<String, Double> condProbInClass = new HashMap<String, Double>();
             Map<String, Double> documentFrequency = documentFrequencies.get(classEntry);
             double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
@@ -92,7 +88,6 @@ public class Classifier {
                 if ((documentFrequency.get(word)/(double)numberOfDocuments) < 0.95 && (documentFrequency.get(word)/(double)numberOfDocuments) > 0.0005) {
                     double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
                     condProbInClass.put(word, log2(wordOccurrencesInClass / wordsInThisClass));
-//                condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);
                 }
             }
             condProb.put(classEntry, condProbInClass);
@@ -124,12 +119,10 @@ public class Classifier {
                     docsInThisClass += 1;
                 }
                 prior.replace(classEntry, log2((double)docsInThisClass/(double)numberOfDocuments));
-//                prior.replace(classEntry, (double) docsInThisClass / (double) numberOfDocuments);
                 double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
                 for (String word : vocabulary.get(classEntry).keySet()) {
                     double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
                     condProbInClass.replace(word, log2(wordOccurrencesInClass/wordsInThisClass));
-//                    condProbInClass.replace(word, wordOccurrencesInClass / wordsInThisClass);
                 }
                 //  Replace old stored values
                 condProb.replace(classEntry, condProbInClass);

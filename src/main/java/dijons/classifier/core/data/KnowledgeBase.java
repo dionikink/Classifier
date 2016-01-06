@@ -15,7 +15,6 @@ public class KnowledgeBase {
 
     private Map<String, Double> prior;
     private Map<String, Map<String, Double>> condProb;
-    private List<String> classes;
     private Map<String, Integer> totalDocsInClasses;
     private Map<String, Integer> totalWordsInClasses;
 
@@ -41,13 +40,5 @@ public class KnowledgeBase {
 
     public void setCondProb(Map<String, Map<String, Double>> condProb) {
         this.condProb = condProb;
-    }
-
-    public List<String> getClasses() {
-        return classes;
-    }
-
-    public void setClasses(List<String> classes) {
-        this.classes = classes;
     }
 }

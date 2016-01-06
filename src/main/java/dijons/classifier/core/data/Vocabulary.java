@@ -14,14 +14,17 @@ public class Vocabulary {
     This is a list with stop words
      */
     private List<String> stopwords = fillList();
+
     /*
     This is a map with the categories as the key and a map with words and the number of occurrences of that specific word in the specified category
      */
     private Map<String, Map<String, Integer>> vocabulary;
+
     /*
     This double is the total number of unique words in the entire vocabulary
      */
     private double uniqueWordCount;
+
     /*
     The documentFrequencies map contains the categories as the key and a map with words and the number of documents in that class they occur in as a value
      */
@@ -29,7 +32,9 @@ public class Vocabulary {
 
     public Map<String, Map<String, Double>> getDocumentFrequencies() {return documentFrequencies; }
 
-    public void setDocumentFrequencies(Map<String, Map<String, Double>> documentFrequencies) {this.documentFrequencies = documentFrequencies; }
+    public void setDocumentFrequencies(Map<String, Map<String, Double>> documentFrequencies) {
+        this.documentFrequencies = documentFrequencies;
+    }
 
     /*
     Returns a list of all the known categories

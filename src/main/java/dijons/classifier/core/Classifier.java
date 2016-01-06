@@ -89,7 +89,7 @@ public class Classifier {
             Map<String, Double> documentFrequency = documentFrequencies.get(classEntry);
             double wordsInThisClass = (double) wordsInClass.get(classEntry) + v.getUniqueWordCount();
             for(String word : vocabulary.get(classEntry).keySet()) {
-                if ((documentFrequency.get(word)/numberOfDocuments) < 0.95 && (documentFrequency.get(word)/numberOfDocuments) > 0.0005) {
+                if ((documentFrequency.get(word)/(double)numberOfDocuments) < 0.95 && (documentFrequency.get(word)/(double)numberOfDocuments) > 0.0005) {
                     double wordOccurrencesInClass = (double) vocabulary.get(classEntry).get(word) + 1;
                     condProbInClass.put(word, log2(wordOccurrencesInClass / wordsInThisClass));
 //                condProbInClass.put(word, wordOccurrencesInClass/wordsInThisClass);

@@ -1,13 +1,8 @@
 package dijons.classifier.core.data;
 
-import javax.print.Doc;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * Created by dion on 9-12-15.

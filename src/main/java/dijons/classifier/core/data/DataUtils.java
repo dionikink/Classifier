@@ -99,7 +99,7 @@ public class DataUtils {
     }
 
     /*
-    This method counts the total number of words for each class
+    This method counts the total number of words for each class and the total number of occurrences of that word within the class
      */
     public static void countTotalWords(String[] wordArray, String className) {
         Map<String, Map<String, Integer>> noOfOccurrences = KnowledgeBase.data.getNoOfOccurrences();
@@ -128,6 +128,10 @@ public class DataUtils {
         KnowledgeBase.data.setTotalWordCount(totalWordCount);
     }
 
+    /*
+    This method fills the bag of words map with the new data
+    During this process the document frequency is also counted and returned
+     */
     public static Map<String, Double> fillBagOfWords(BufferedReader bufferedReader, String className, Map<String, Integer> bagOfWords, Map<String,Double> documentFrequency) throws IOException {
         List<String> stopwords = Vocabulary.getInstance().getStopwords();
         List<String> doneWords = new ArrayList<String>();
@@ -160,6 +164,9 @@ public class DataUtils {
         return documentFrequency;
     }
 
+    /*
+    This method counts the total number of documents
+     */
     public static void count(Enumeration<? extends ZipEntry> entries) {
         int totalNoOfDocs = 0;
 
@@ -173,6 +180,9 @@ public class DataUtils {
         KnowledgeBase.numberOfDocuments = totalNoOfDocs;
     }
 
+    /*
+    This method strips the content of the files into tokenized data and returns a document containing the data
+     */
     public static Document tokenizer(String data) {
         HashMap<String, Integer> bagOfWords = new HashMap<String, Integer>();
         List<String> stopwords = Vocabulary.getInstance().getStopwords();
@@ -194,6 +204,9 @@ public class DataUtils {
         return new Document(bagOfWords);
     }
 
+    /*
+    This method counts and returns the total number of documents per class given a zip file
+     */
     public static Map<String, Integer> countDocumentsInClass(File file) {
         ZipFile zipFile = null;
         Map<String, Integer> docsInClass = new HashMap<String, Integer>();
@@ -228,6 +241,9 @@ public class DataUtils {
         return docsInClass;
     }
 
+    /*
+    This method returns the total number of words per class
+     */
     public static Map<String, Integer> countWordsInClass() {
         Map<String, Map<String,Integer>> vocabulary = KnowledgeBase.data.getNoOfOccurrences();
         Map<String, Integer> wordsInClass = new HashMap<String, Integer>();

@@ -1,6 +1,5 @@
 package dijons.classifier.core.data;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,12 +9,7 @@ import java.util.Map;
 public class Document {
 
     private Map<String, Integer> bagOfWords;
-    private String category;
     private String name;
-
-    public Document(String name) {
-        this.bagOfWords = new HashMap<String, Integer>();
-    }
 
     public Document(Map<String, Integer> bagOfWords) {
         this.bagOfWords = bagOfWords;
@@ -23,14 +17,6 @@ public class Document {
 
     public Map<String, Integer> getBagOfWords() {
         return bagOfWords;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getName() {

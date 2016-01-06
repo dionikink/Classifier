@@ -11,9 +11,6 @@ public class DataSet {
 
     private Map<String, Map<String,Integer>> noOfOccurrences;
 
-    /*
-    This map contains every word and their total
-     */
     private Map<String,Integer> totalWordCount;
 
     public DataSet() {

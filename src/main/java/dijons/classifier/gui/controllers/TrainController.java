@@ -22,6 +22,7 @@ public class TrainController {
 
     private File selectedFile;
 
+    // Opens a FileChooser to allow the user to select a .zip file that will train the classifier
     public void btnBrowseClicked() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select training file");
@@ -38,6 +39,7 @@ public class TrainController {
         }
     }
 
+    // Trains the classifier using the training set provided by the user
     public void btnTrainClicked() {
         Classifier c = Classifier.getInstance();
         c.train(selectedFile);
@@ -45,7 +47,12 @@ public class TrainController {
         btnCancelClicked();
     }
 
+    // Closes the current window
     public void btnCancelClicked() {
+        cancel();
+    }
+
+    public void cancel() {
         Stage stage = (Stage) train.getScene().getWindow();
         stage.close();
     }

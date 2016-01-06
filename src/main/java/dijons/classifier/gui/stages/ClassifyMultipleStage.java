@@ -14,6 +14,8 @@ public class ClassifyMultipleStage {
     @FXML
     Parent main;
 
+    // Opens a window that allows the user to classify multiple files at once
+    // Also shows the user a warning that he shouldn't classify too many files at once
     public void start() {
         try {
             main = FXMLLoader.load(getClass().getResource("/gui/classifyMultiple.fxml"));

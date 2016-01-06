@@ -16,9 +16,8 @@ public class MainController {
 
     private static boolean trained = false;
 
-    @FXML
-    public Button btnTrain;
-
+    // Opens a new 'Train' window
+    // Will not open a new window if the classifier has been trained already
     public void btnTrainClicked() {
         if (trained) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -32,6 +31,8 @@ public class MainController {
         }
     }
 
+    // Opens a new 'Classify' window
+    // Will not open a new window if the classifier hasn't been trained
     public void btnClassifyClicked() {
         if (!trained) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -45,6 +46,8 @@ public class MainController {
         }
     }
 
+    // Opens a new 'Test' window
+    // Will not open a new window if the classifier hasn't been trained
     public void btnTestClicked() {
         if (!trained) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -58,6 +61,7 @@ public class MainController {
         }
     }
 
+    // Allows the TrainController to set the classifier to 'trained'
     public static void setTrained(boolean trained) {
         MainController.trained = trained;
     }

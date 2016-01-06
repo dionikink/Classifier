@@ -13,6 +13,7 @@ public class ClassifySelectStage {
     @FXML
     Parent main;
 
+    // Opens a window to allow the user to select whether he wants to classify a single file or multiple files
     public void start() {
         try {
             main = FXMLLoader.load(getClass().getResource("/gui/classifySelect.fxml"));

@@ -27,6 +27,7 @@ public class TestController {
     private boolean sourceSelected = false;
     private boolean outputSelected = false;
 
+    // Opens a FileChooser to allow the user to select a file to test the classifier on
     public void btnBrowseSourceClicked() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select test set");
@@ -47,6 +48,7 @@ public class TestController {
         update();
     }
 
+    // Opens a DirectoryChooser to allow the user to select where he wants to classifier to save its output
     public void btnBrowseOutputClicked() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select output location");
@@ -64,6 +66,7 @@ public class TestController {
         update();
     }
 
+    // Tests the classifier using the given files
     public void btnTestClicked() {
         Classifier c = Classifier.getInstance();
         c.test(selectedFile, selectedOutput);
@@ -71,11 +74,7 @@ public class TestController {
         stage.close();
     }
 
-    public void btnCancelClicked() {
-        Stage stage = (Stage) test.getScene().getWindow();
-        stage.close();
-    }
-
+    // Enables the 'Test' button if both the source as well as the output location have been selected
     public void update() {
         if (sourceSelected && outputSelected) {
             btnTest.setDisable(false);
@@ -83,4 +82,16 @@ public class TestController {
             btnTest.setDisable(true);
         }
     }
+
+    // Closes the current window
+    public void btnCancelClicked() {
+        cancel();
+    }
+
+    public void cancel() {
+        Stage stage = (Stage) test.getScene().getWindow();
+        stage.close();
+    }
+
+
 }

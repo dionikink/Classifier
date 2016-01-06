@@ -1,21 +1,18 @@
 package dijons.classifier.gui.controllers;
 
 import dijons.classifier.core.Classifier;
-import dijons.classifier.core.data.DataUtils;
 import dijons.classifier.core.data.Document;
 import dijons.classifier.core.data.Vocabulary;
-import dijons.classifier.gui.stages.ClassifyMultipleStage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -33,12 +30,14 @@ public class InteractiveController {
     private Document document;
     private boolean multiple;
 
+    // The InteractiveController receives the result of the classification as a parameter to show the user the result
     public InteractiveController(String result, Document document, boolean multiple) {
         this.result = result;
         this.document = document;
         this.multiple = multiple;
     }
 
+    // Sets the text that displays the result of the classification
     public void initialize() {
         txtInput.setText(document.getName() + " was classified as " + result);
         List<String> classes = Vocabulary.getInstance().getClasses();
@@ -47,16 +46,18 @@ public class InteractiveController {
         bxCorrectClass.setItems(FXCollections.observableArrayList(classes));
     }
 
+    // Enables the 'OK' button when the user selects an item from the ChoiceBox
     public void bxCorrectClassChanged() {
         btnOK.setDisable(false);
     }
 
-    public synchronized void btnOKClicked() {
+    // Trains the classifier with the file that was just classified and the user's feedback
+    public void btnOKClicked() {
         String result = bxCorrectClass.getValue();
 
         Classifier.getInstance().trainSingleDocument(document, result);
 
-        btnCancelClicked();
+        cancel();
 
         if (!multiple) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -68,7 +69,12 @@ public class InteractiveController {
         }
     }
 
+    // Closes the current window
     public void btnCancelClicked() {
+        cancel();
+    }
+
+    public void cancel() {
         Stage stage = (Stage) interactive.getScene().getWindow();
         stage.close();
     }

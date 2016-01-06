@@ -6,7 +6,6 @@ import dijons.classifier.core.data.Document;
 import dijons.classifier.gui.stages.InteractiveStage;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -28,7 +27,9 @@ public class ClassifyMultipleController {
 
     private File selectedFile;
 
-    public synchronized void btnClassifyClicked() {
+    // Extracts the files to classify from the .zip file (input) and then classifies them all
+    // Also shows a feedback window (interactive) for every classified file
+    public void btnClassifyClicked() {
         Classifier c = Classifier.getInstance();
         List<Document> documents = null;
 
@@ -41,6 +42,8 @@ public class ClassifyMultipleController {
 
         for(Document document : documents) {
             String result = c.apply(document);
+
+            // Opens a new feedback window for the file that was just classified
             InteractiveStage interactiveStage = new InteractiveStage(true);
             interactiveStage.start(result, document);
         }
@@ -48,6 +51,7 @@ public class ClassifyMultipleController {
         btnCancelClicked();
     }
 
+    // Opens a FileChooser to allow the user to select a file (.zip with multiple .txt files) to classify
     public void btnBrowseClicked() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select files to classify");
@@ -64,16 +68,13 @@ public class ClassifyMultipleController {
         }
     }
 
+    // Closes the current window
     public void btnCancelClicked() {
-        Stage stage = (Stage) classifyMultiple.getScene().getWindow();
-        stage.close();
+        cancel();
     }
 
-    public void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            System.err.println("Could not sleep");
-        }
+    public void cancel() {
+        Stage stage = (Stage) classifyMultiple.getScene().getWindow();
+        stage.close();
     }
 }

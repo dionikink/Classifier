@@ -13,6 +13,7 @@ public class TestStage {
     @FXML
     Parent main;
 
+    // Opens a new window that allows the user to test the classifier
     public void start() {
         try {
             main = FXMLLoader.load(getClass().getResource("/gui/test.fxml"));

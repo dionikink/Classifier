@@ -25,6 +25,7 @@ public class ClassifySingleController {
 
     public File selectedFile;
 
+    // Classifies the single input file and opens a feedback window to receive feedback from the user
     public void btnClassifyClicked() {
         Classifier c = Classifier.getInstance();
         Document document = DataUtils.extractDocument(selectedFile);
@@ -37,6 +38,7 @@ public class ClassifySingleController {
         stage.close();
     }
 
+    // Opens a FileChooser to allow the user to select a file to classify
     public void btnBrowseClicked() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select file to classify");
@@ -53,7 +55,12 @@ public class ClassifySingleController {
         }
     }
 
+    // Closes the current window
     public void btnCancelClicked() {
+        cancel();
+    }
+
+    public void cancel() {
         Stage stage = (Stage) classifySingle.getScene().getWindow();
         stage.close();
     }

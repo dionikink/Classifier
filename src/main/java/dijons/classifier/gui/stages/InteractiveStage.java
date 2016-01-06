@@ -18,6 +18,7 @@ public class InteractiveStage {
 
     private boolean multiple = false;
 
+    // If the classifier is classifying multiple files, this will prevent the 'Thank you for your feedback' window from popping up every time
     public InteractiveStage(boolean multiple) {
         if (multiple) {
             this.multiple = true;
@@ -28,6 +29,7 @@ public class InteractiveStage {
         this.multiple = false;
     }
 
+    // Opens a window that allows the user to give feedback on the classification of file that was just classified
     public void start(String result, Document document) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/interactive.fxml"));
         InteractiveController interactiveController = new InteractiveController(result, document, multiple);

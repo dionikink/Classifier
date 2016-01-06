@@ -13,6 +13,7 @@ public class TrainStage {
     @FXML
     Parent main;
 
+    // Opens a window that allows the user to train the classifier
     public void start() {
         try {
             main = FXMLLoader.load(getClass().getResource("/gui/train.fxml"));

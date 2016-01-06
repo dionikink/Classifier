@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 public class MainStage extends Application {
 
+    // Opens the main menu
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/gui/main.fxml"));
@@ -16,7 +17,7 @@ public class MainStage extends Application {
         primaryStage.show();
     }
 
-
+    // Starts the program
     public static void main(String[] args) {
         launch(args);
     }

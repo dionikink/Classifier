@@ -13,6 +13,7 @@ public class ClassifySingleStage {
     @FXML
     Parent main;
 
+    // Opens a window that allows the user to classify a single file
     public void start() {
         try {
             main = FXMLLoader.load(getClass().getResource("/gui/classifySingle.fxml"));

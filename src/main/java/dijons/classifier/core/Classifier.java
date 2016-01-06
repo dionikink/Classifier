@@ -66,7 +66,7 @@ public class Classifier {
     public void train(File file) {
         Vocabulary v = Vocabulary.getInstance();
         v.addFile(file);
-        Map<String, Map<String, Integer>> vocabulary = v.getMap();
+        Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
 
         int numberOfDocuments = KnowledgeBase.numberOfDocuments;
         Map<String, Double> prior = new HashMap<String, Double>();
@@ -108,7 +108,7 @@ public class Classifier {
         Map<String, Integer> docsInClass = knowledgeBase.getTotalDocsInClasses();
         Map<String, Integer> wordsInClass = knowledgeBase.getTotalWordsInClasses();
         Map<String, Double> prior = knowledgeBase.getPrior();
-        Map<String, Map<String, Integer>> vocabulary = v.getMap();
+        Map<String, Map<String, Integer>> vocabulary = v.getVocabulary();
 
         int numberOfDocuments = KnowledgeBase.numberOfDocuments + 1;
         if (condProb.containsKey(className)) {

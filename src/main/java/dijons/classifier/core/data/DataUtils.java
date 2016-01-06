@@ -11,6 +11,11 @@ import java.util.zip.ZipFile;
  */
 public class DataUtils {
 
+    /*
+    This method creates a vocabulary map from a given (zip) file by counting the number of occurrences of each word for each category
+    It also creates the documentFrequencies map by counting the number of documents per word per category
+    This method reads the directory structure of the zip file as the categories and stores them that way
+     */
     public static Map<String, Map<String, Integer>> extractVocabulary(File file) throws IOException{
         KnowledgeBase.data = new DataSet();
         Map<String, Map<String,Integer>> result = new HashMap<String, Map<String, Integer>>();
@@ -47,6 +52,9 @@ public class DataUtils {
         return result;
     }
 
+    /*
+    This method creates a list of Document classes for each text file entry in the given zip file
+     */
     public static ArrayList<Document> extractDocuments(File file) throws IOException {
         ArrayList<Document> result = new ArrayList<Document>();
         ZipFile zipFile = new ZipFile(file);
@@ -68,6 +76,9 @@ public class DataUtils {
         return result;
     }
 
+    /*
+    This method creates a single document class from one text file
+     */
     public static Document extractDocument(File file) {
         Document result = null;
         String data = "";
@@ -80,15 +91,16 @@ public class DataUtils {
             }
 
             result = DataUtils.tokenizer(data);
-
+            result.setName(file.getName());
         } catch (IOException e) {
             System.err.println("Cannot open file " + file.getName());
         }
-
-        result.setName(file.getName());
         return result;
     }
 
+    /*
+    This method counts the total number of words for each class
+     */
     public static void countTotalWords(String[] wordArray, String className) {
         Map<String, Map<String, Integer>> noOfOccurrences = KnowledgeBase.data.getNoOfOccurrences();
         Map<String, Integer> totalWordCount;
